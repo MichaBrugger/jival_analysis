@@ -1,0 +1,20 @@
+Shop,Route,Driver,Total Deliveries,Amount of Trips,Avg Delivery,Avg Planned,Min Delivery,Max Delivery,Avg Time,Avg Del/h,Zero_Delivery,0 Delivery %
+Rampura,"Sindhi Bazar, Mochi Wada",Vickey Pathoon,468,11,42.5,107.8,21,83,5:55,7.17,66.0,1.6
+Rampura,"Sindhi Bazar, Mochi Wada",Ravindra Vaishnav,53,1,53.0,108.0,53,53,5:55,8.94,56.0,1.1
+Rampura,Old City,Pushkar Dangi,782,10,78.2,160.7,35,119,6:8,12.74,77.0,1.0
+Rampura,Old City,Santosh Gameti,41,1,41.0,157.0,41,41,6:8,6.68,109.0,2.7
+Rampura,Old City,Surendra Singh Rathore,45,1,45.0,156.0,45,45,6:8,7.33,105.0,2.3
+Rampura,"Hatipole, Ashwini Bazar",Rinkesh  Khatik,605,9,67.2,208.3,43,105,5:7,13.09,132.9,2.0
+Rampura,"Hatipole, Ashwini Bazar",Laxman Lal Nayak,106,2,53.0,206.5,49,57,5:7,10.33,145.0,2.7
+Rampura,"Hatipole, Ashwini Bazar",Pradeep Kumar,72,1,72.0,207.0,72,72,5:7,14.03,128.0,1.8
+Rampura,"Gulabh Bagh, Amal ka Kanta",Surendra Singh Rathore,439,11,39.9,86.9,25,61,5:3,7.88,34.7,0.9
+Rampura,"Gulabh Bagh, Amal ka Kanta",Santosh Gameti,33,1,33.0,86.0,33,33,5:3,6.52,43.0,1.3
+Rampura,G.D. Goenka International School,Rinkesh  Khatik,93,3,31.0,59.0,25,38,0:51,36.47,1.3,0.0
+Rampura,G.D. Goenka International School,Laxman Lal Nayak,50,2,25.0,59.0,24,26,0:51,29.41,2.0,0.1
+Rampura,G.D. Goenka International School,Surendra Singh Rathore,38,1,38.0,59.0,38,38,0:51,44.71,0.0,0.0
+Rampura,Chandpole Area,Ravindra Vaishnav,267,7,38.1,79.9,32,44,3:37,10.49,43.3,1.1
+Rampura,Chandpole Area,Laxman Lal Nayak,198,5,39.6,81.0,30,49,3:37,10.91,44.0,1.1
+Rampura,"Amawadi, Rampura",Pradeep Kumar,133,6,22.2,71.0,17,30,1:38,13.48,44.2,2.0
+Rampura,"Amawadi, Rampura",Santosh Gameti,128,6,21.3,68.2,17,31,1:38,12.93,43.7,2.1
+Rampura,80 Feet Road,Pradeep Kumar,242,6,40.3,131.7,21,57,3:39,11.0,81.5,2.0
+Rampura,80 Feet Road,Santosh Gameti,275,6,45.8,129.5,30,69,3:39,12.5,75.0,1.6

@@ -1,0 +1,15 @@
+Shop,Route,Driver,Total Deliveries,Amount of Trips,Avg Delivery,Avg Planned,Min Delivery,Max Delivery,Avg Time,Avg Del/h,Zero_Delivery,0 Delivery %
+Pratap Nagar,University Road,Dharmendra Dangi ,705,12,58.8,159.2,45,83,5:27,10.77,94.1,1.6
+Pratap Nagar,Transport Nagar,Dinesh Dangi,631,9,70.1,193.9,63,78,5:10,13.55,129.7,1.9
+Pratap Nagar,Transport Nagar,Shankar Lal Nagda,153,2,76.5,194.5,67,86,5:10,14.79,124.0,1.6
+Pratap Nagar,Transport Nagar,Dungar Lal Rebari,68,1,68.0,200.0,68,68,5:10,13.14,138.0,2.0
+Pratap Nagar,Townhall Main Road,Narpat Singh Rawat,777,10,77.7,168.9,60,101,5:54,13.15,87.3,1.1
+Pratap Nagar,Townhall Main Road,Dungar Lal Rebari,87,1,87.0,185.0,87,87,5:54,14.72,94.0,1.1
+Pratap Nagar,Townhall Main Road,Moti Singh,64,1,64.0,172.0,64,64,5:54,10.83,103.0,1.6
+Pratap Nagar,"Sunderwas, Sevashram, Durga Nursery",Durgesh Gayri,492,7,70.3,171.7,39,85,5:27,12.86,82.4,1.2
+Pratap Nagar,"Sunderwas, Sevashram, Durga Nursery",Dungar Lal Rebari,307,5,61.4,175.4,53,81,5:27,11.23,96.0,1.6
+Pratap Nagar,Secure Meters Route,Asheen  Khan,1581,12,131.8,200.0,61,199,3:47,34.73,0.1,0.0
+Pratap Nagar,"Debari, Gudli",Moti Singh,812,11,73.8,155.1,53,93,5:20,13.82,73.7,1.0
+Pratap Nagar,"Debari, Gudli",Dungar Lal Rebari,68,1,68.0,155.0,68,68,5:20,12.73,80.0,1.2
+Pratap Nagar,Babu Bazaar,Shankar Lal Nagda,913,10,91.3,166.1,63,113,5:26,16.77,60.4,0.7
+Pratap Nagar,Babu Bazaar,Dungar Lal Rebari,114,2,57.0,150.5,42,72,5:26,10.47,77.5,1.4

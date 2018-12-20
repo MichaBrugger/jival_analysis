@@ -1,0 +1,9 @@
+Shop,Route,Driver,Total Deliveries,Amount of Trips,Avg Delivery,Avg Planned,Min Delivery,Max Delivery,Avg Time,Avg Del/h,Zero_Delivery,0 Delivery %
+Savina,Sector Area,Aftab Makrani,652,12,54.3,121.8,34,76,4:35,11.83,61.7,1.1
+Savina,"Sector 9, 11, 13, 14",Aazad Khan,831,11,75.5,218.1,53,90,4:55,15.35,119.6,1.6
+Savina,"Sector 9, 11, 13, 14",Suresh Meghwal,71,1,71.0,213.0,71,71,4:55,14.44,118.0,1.7
+Savina,Savina,Prakash Singh,777,11,70.6,194.9,52,82,4:42,14.98,108.5,1.5
+Savina,Savina,Madan lal Dangi,89,1,89.0,209.0,89,89,4:42,18.88,106.0,1.2
+Savina,"IIM, Balicha",Bharat  Gameti,871,12,72.6,117.8,62,80,3:58,18.3,24.2,0.3
+Savina,"Balicha, Satyam Estate",Suresh Meghwal,707,10,70.7,152.8,56,87,3:48,18.59,69.9,1.0
+Savina,"Balicha, Satyam Estate",Madan lal Dangi,137,2,68.5,151.5,61,76,3:48,18.01,69.0,1.0

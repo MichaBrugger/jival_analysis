@@ -1,0 +1,70 @@
+Shop,Route,Driver,Total Deliveries,Amount of Trips,Avg Delivery,Avg Planned,Min Delivery,Max Delivery,Avg Time,Avg Del/h,Zero_Delivery,0 Delivery %
+Savina,Sector Area,Aftab Makrani,652,12,54.3,121.8,34,76,4:35,11.83,61.7,1.1
+Savina,"Sector 9, 11, 13, 14",Aazad Khan,831,11,75.5,218.1,53,90,4:55,15.35,119.6,1.6
+Savina,"Sector 9, 11, 13, 14",Suresh Meghwal,71,1,71.0,213.0,71,71,4:55,14.44,118.0,1.7
+Savina,Savina,Prakash Singh,777,11,70.6,194.9,52,82,4:42,14.98,108.5,1.5
+Savina,Savina,Madan lal Dangi,89,1,89.0,209.0,89,89,4:42,18.88,106.0,1.2
+Savina,"IIM, Balicha",Bharat  Gameti,871,12,72.6,117.8,62,80,3:58,18.3,24.2,0.3
+Savina,"Balicha, Satyam Estate",Suresh Meghwal,707,10,70.7,152.8,56,87,3:48,18.59,69.9,1.0
+Savina,"Balicha, Satyam Estate",Madan lal Dangi,137,2,68.5,151.5,61,76,3:48,18.01,69.0,1.0
+Rampura,"Sindhi Bazar, Mochi Wada",Vickey Pathoon,468,11,42.5,107.8,21,83,5:55,7.17,66.0,1.6
+Rampura,"Sindhi Bazar, Mochi Wada",Ravindra Vaishnav,53,1,53.0,108.0,53,53,5:55,8.94,56.0,1.1
+Rampura,Old City,Pushkar Dangi,782,10,78.2,160.7,35,119,6:8,12.74,77.0,1.0
+Rampura,Old City,Santosh Gameti,41,1,41.0,157.0,41,41,6:8,6.68,109.0,2.7
+Rampura,Old City,Surendra Singh Rathore,45,1,45.0,156.0,45,45,6:8,7.33,105.0,2.3
+Rampura,"Hatipole, Ashwini Bazar",Rinkesh  Khatik,605,9,67.2,208.3,43,105,5:7,13.09,132.9,2.0
+Rampura,"Hatipole, Ashwini Bazar",Laxman Lal Nayak,106,2,53.0,206.5,49,57,5:7,10.33,145.0,2.7
+Rampura,"Hatipole, Ashwini Bazar",Pradeep Kumar,72,1,72.0,207.0,72,72,5:7,14.03,128.0,1.8
+Rampura,"Gulabh Bagh, Amal ka Kanta",Surendra Singh Rathore,439,11,39.9,86.9,25,61,5:3,7.88,34.7,0.9
+Rampura,"Gulabh Bagh, Amal ka Kanta",Santosh Gameti,33,1,33.0,86.0,33,33,5:3,6.52,43.0,1.3
+Rampura,G.D. Goenka International School,Rinkesh  Khatik,93,3,31.0,59.0,25,38,0:51,36.47,1.3,0.0
+Rampura,G.D. Goenka International School,Laxman Lal Nayak,50,2,25.0,59.0,24,26,0:51,29.41,2.0,0.1
+Rampura,G.D. Goenka International School,Surendra Singh Rathore,38,1,38.0,59.0,38,38,0:51,44.71,0.0,0.0
+Rampura,Chandpole Area,Ravindra Vaishnav,267,7,38.1,79.9,32,44,3:37,10.49,43.3,1.1
+Rampura,Chandpole Area,Laxman Lal Nayak,198,5,39.6,81.0,30,49,3:37,10.91,44.0,1.1
+Rampura,"Amawadi, Rampura",Pradeep Kumar,133,6,22.2,71.0,17,30,1:38,13.48,44.2,2.0
+Rampura,"Amawadi, Rampura",Santosh Gameti,128,6,21.3,68.2,17,31,1:38,12.93,43.7,2.1
+Rampura,80 Feet Road,Pradeep Kumar,242,6,40.3,131.7,21,57,3:39,11.0,81.5,2.0
+Rampura,80 Feet Road,Santosh Gameti,275,6,45.8,129.5,30,69,3:39,12.5,75.0,1.6
+Pratap Nagar,University Road,Dharmendra Dangi ,705,12,58.8,159.2,45,83,5:27,10.77,94.1,1.6
+Pratap Nagar,Transport Nagar,Dinesh Dangi,631,9,70.1,193.9,63,78,5:10,13.55,129.7,1.9
+Pratap Nagar,Transport Nagar,Shankar Lal Nagda,153,2,76.5,194.5,67,86,5:10,14.79,124.0,1.6
+Pratap Nagar,Transport Nagar,Dungar Lal Rebari,68,1,68.0,200.0,68,68,5:10,13.14,138.0,2.0
+Pratap Nagar,Townhall Main Road,Narpat Singh Rawat,777,10,77.7,168.9,60,101,5:54,13.15,87.3,1.1
+Pratap Nagar,Townhall Main Road,Dungar Lal Rebari,87,1,87.0,185.0,87,87,5:54,14.72,94.0,1.1
+Pratap Nagar,Townhall Main Road,Moti Singh,64,1,64.0,172.0,64,64,5:54,10.83,103.0,1.6
+Pratap Nagar,"Sunderwas, Sevashram, Durga Nursery",Durgesh Gayri,492,7,70.3,171.7,39,85,5:27,12.86,82.4,1.2
+Pratap Nagar,"Sunderwas, Sevashram, Durga Nursery",Dungar Lal Rebari,307,5,61.4,175.4,53,81,5:27,11.23,96.0,1.6
+Pratap Nagar,Secure Meters Route,Asheen  Khan,1581,12,131.8,200.0,61,199,3:47,34.73,0.1,0.0
+Pratap Nagar,"Debari, Gudli",Moti Singh,812,11,73.8,155.1,53,93,5:20,13.82,73.7,1.0
+Pratap Nagar,"Debari, Gudli",Dungar Lal Rebari,68,1,68.0,155.0,68,68,5:20,12.73,80.0,1.2
+Pratap Nagar,Babu Bazaar,Shankar Lal Nagda,913,10,91.3,166.1,63,113,5:26,16.77,60.4,0.7
+Pratap Nagar,Babu Bazaar,Dungar Lal Rebari,114,2,57.0,150.5,42,72,5:26,10.47,77.5,1.4
+Madri,U.I.T. / Commercial Late,Roop Lal Dangi,913,11,83.0,174.6,42,97,5:35,14.86,52.6,0.6
+Madri,U.I.T. / Commercial Late,Prakesh Dangi,71,1,71.0,173.0,71,71,5:35,12.71,55.0,0.8
+Madri,U.I.T. / Commercial Early,Dinesh Dangi,810,10,81.0,253.7,46,111,4:54,16.51,50.1,0.6
+Madri,U.I.T. / Commercial Early,Prakesh Dangi,148,2,74.0,264.5,63,85,4:54,15.09,61.0,0.8
+Madri,"Tokhar Choraha, Durga Nursery",Dilip Patel,875,10,87.5,215.0,49,116,5:57,14.71,82.3,0.9
+Madri,"Tokhar Choraha, Durga Nursery",Prakesh Dangi,212,2,106.0,221.5,96,116,5:57,17.82,79.0,0.7
+Madri,Sector Area East,Sudeep Soni,1001,10,100.1,220.8,87,119,6:41,14.98,119.5,1.2
+Madri,Sector Area East,Prakesh Dangi,191,2,95.5,228.5,80,111,6:41,14.29,134.5,1.4
+Madri,Industrial Area Late,Prakash  Dangi,735,10,73.5,152.1,40,88,3:59,18.45,28.3,0.4
+Madri,Industrial Area Late,Prakesh Dangi,85,1,85.0,163.0,85,85,3:59,21.33,28.0,0.3
+Madri,Industrial Area Late,Sudeep Soni,62,1,62.0,149.0,62,62,3:59,15.56,36.0,0.6
+Madri,Eklingpura Late,Panna Lal Dangi,606,9,67.3,144.6,47,92,5:6,13.16,69.1,1.0
+Madri,Eklingpura Late,Prakesh Dangi,135,2,67.5,138.0,51,84,5:6,13.2,62.5,0.9
+Madri,Eklingpura Late,Sudeep Soni,90,1,90.0,159.0,90,90,5:6,17.6,61.0,0.7
+Bhuwana,Sukher Industrial Area,Kishan Lal Dangi,997,10,99.7,197.0,92,110,6:16,15.89,62.1,0.6
+Bhuwana,Sukher Industrial Area,Govind Dangi,93,1,93.0,203.0,93,93,6:16,14.82,78.0,0.8
+Bhuwana,Sukher Industrial Area,Kan Singh Jhala,94,1,94.0,201.0,94,94,6:16,14.98,69.0,0.7
+Bhuwana,Madhuban,Vinod  Dangi,1131,12,94.2,180.9,65,117,5:40,16.59,56.8,0.6
+Bhuwana,Fatehpura,Gopal Lal  Gameti,986,10,98.6,219.7,71,117,5:40,17.37,91.2,0.9
+Bhuwana,Fatehpura,Govind Dangi,93,1,93.0,224.0,93,93,5:40,16.38,90.0,1.0
+Bhuwana,Fatehpura,Kan Singh Jhala,99,1,99.0,220.0,99,99,5:40,17.44,98.0,1.0
+Bhuwana,Bhuwana East,Pushkar  Lal,795,10,79.5,173.1,47,109,5:10,15.37,88.6,1.1
+Bhuwana,Bhuwana East,Kan Singh Jhala,127,2,63.5,175.5,45,82,5:10,12.28,100.5,1.6
+Bhuwana,Bhuwana,Vinod Dangi,713,9,79.2,199.1,61,96,5:51,13.51,99.7,1.3
+Bhuwana,Bhuwana,Kan Singh Jhala,233,3,77.7,205.3,66,84,5:51,13.26,106.3,1.4
+Bhuwana,Bedla,Karan Singh Dulawat,917,12,76.4,166.2,67,88,5:8,14.88,79.3,1.0
+Bhuwana,100 Feet Road,Mahendra Dangi,735,11,66.8,148.8,47,92,5:28,12.22,73.2,1.1
+Bhuwana,100 Feet Road,Kuldeep Dangi,55,1,55.0,154.0,55,55,5:28,10.06,86.0,1.6
