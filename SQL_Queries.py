@@ -1,4 +1,5 @@
 class SQL_Queries:
+
     SQL_TripHeader = """
         select 
         th_id as 'Trip_Header_ID', 
@@ -76,6 +77,7 @@ class SQL_Queries:
             and td_date > DATEADD(day,-14,getdate())
         group by TD_Date, TD_Shop_Description, TD_Route_Description, EM_Employee_First_Name + ' ' + EM_Employee_Last_Name
     """
+
     def get_SQL_TripHeader(self):
         return self.SQL_TripHeader
 

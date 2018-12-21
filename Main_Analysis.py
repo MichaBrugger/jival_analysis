@@ -1,36 +1,19 @@
 import pandas as pd
 import os
-import numpy as np
-import time
 from datetime import date, datetime
 from functools import reduce
 from SQL_Queries import SQL_Queries
-from Get_SQL_Data_From_Files import get_Data
+from Data_from_SQL import get_Data
+from Save_Output import Save_Output
 
 Call_SQL_Queries = SQL_Queries()
 Queries = {"SQL_TripHeader": Call_SQL_Queries.SQL_TripHeader, "SQL_Trip": Call_SQL_Queries.SQL_Trip}
 SQL_Folder = 'Output/SQL_RawData/'
-Date = str(date.today())
+date = str(date.today())
 
-
-Call_Get_Data = get_Data(SQL_Folder, Queries, Date)
+Call_Get_Data = get_Data(SQL_Folder, Queries, date)
 
 Call_Get_Data.get_data_from_sql()
-
-# store_csv_to_df function to take csv into dataframe
-def store_csv_to_df():
-    global dataframe_one
-    global dataframe_two
-    # Read data from file 'SQL_Trip_2018-12-16.csv'
-    # (in the same directory that your python process is based)
-    # Control delimiters, rows, column names with read_csv (see later)
-    dataframe_one = pd.read_csv(SQL_Folder + "SQL_Trip_{}.csv".format(Date))
-    dataframe_two = pd.read_csv(SQL_Folder + "SQL_TripHeader_{}.csv".format(Date))
-
-
-# calling store_csv_to_df() function
-store_csv_to_df()
-
 
 # function convert_sec_to_time to convert seconds into hours:minutes
 def convert_sec_to_time(x):
@@ -48,29 +31,33 @@ def days_between(d1, d2):
     # sec=get_sec(abs(d2 - d1))
     return (abs(d2 - d1).seconds)
 
-
 # operations_on_csv function to perform operation on csv datasheet
 def operations_on_csv():
+
+    dataframes = Call_Get_Data.store_csv_to_df()
+    DF_Trip = dataframes[0]
+    DF_TripHeader = dataframes[1]
+
     # apply function to calculate Delivery time for calculating avg delivery time
-    dataframe_two['Delivery_time'] = dataframe_two.apply(
+    DF_TripHeader['Delivery_time'] = DF_TripHeader.apply(
         lambda row: (int(days_between(row.Trip_StartTime, row.Trip_EndTime))), axis=1)
 
-    df_mean_ad = dataframe_one.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].mean().round(1)
+    df_mean_ad = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].mean().round(1)
     df_mean_ad.columns = ['Shop','Route','Driver','Avg Delivery']
-    df_mean_zero = dataframe_one.groupby(['Route', 'Driver'], as_index=False)['Zero_Delivery'].mean().round(1)
-    df_min = dataframe_one.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].min()
-    df_max = dataframe_one.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].max()
-    df_count = dataframe_one.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].count()
-    df_sum = dataframe_one.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].sum()
-    df_planned_mean = dataframe_one.groupby(['Route', 'Driver'], as_index=False)['Planned_Delivery'].mean().round(1)
+    df_mean_zero = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Zero_Delivery'].mean().round(1)
+    df_min = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].min()
+    df_max = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].max()
+    df_count = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].count()
+    df_sum = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].sum()
+    df_planned_mean = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Planned_Delivery'].mean().round(1)
 
     df_final = reduce(lambda left, right: pd.merge(left, right, on=['Route', 'Driver']),
                      [df_count, df_sum, df_mean_zero, df_mean_ad, df_planned_mean, df_min, df_max])
 
     # Filling NaN value with the value '0' to avoid errors
-    dataframe_two['Delivery_time'] = dataframe_two['Delivery_time'].fillna(0)
+    DF_TripHeader['Delivery_time'] = DF_TripHeader['Delivery_time'].fillna(0)
 
-    df_time_mean = dataframe_two.groupby(['Route_Name'], as_index=False)['Delivery_time'].mean()
+    df_time_mean = DF_TripHeader.groupby(['Route_Name'], as_index=False)['Delivery_time'].mean()
 
     # calculating average delivery time and converting into hours:minute format using convert_sec_to_time()
     df_time_mean['avg_delivery_time'] = df_time_mean.apply(lambda row: (convert_sec_to_time(row.Delivery_time)), axis=1)
@@ -99,12 +86,10 @@ def operations_on_csv():
     #Sorting the values for better Overview
     df_final = df_final.sort_values(['Shop', 'Route', 'Amount of Trips'], ascending=False)
 
-
-
     """
 
     # performing operations using lambda function and groupby to sort based upon shop and driver (calculating number of zeroes in actual delivery)
-    df_count = dataframe_one.groupby(['Route'])['Actual_Delivery'].apply(lambda x: (x == 0).sum()).reset_index(name='zero_count')
+    df_count = DF_Trip.groupby(['Route'])['Actual_Delivery'].apply(lambda x: (x == 0).sum()).reset_index(name='zero_count')
 
     df_final = reduce(lambda left, right: pd.merge(left, right, on=['Route']), [df_final, df_count])
 
@@ -120,36 +105,13 @@ def operations_on_csv():
 
     """
 
+    Save = Save_Output(date, df_final)
+    Save.Save_to_Folder()
 
-    # Getting a unique list of all the shops in the data
-    Shop_List = df_final['Shop'].unique()
-
-    # Looping through the Shop_List, to create individual files/folders for every shop
-    for Shop in range(len(Shop_List)):
-        ShopName = Shop_List[Shop]
-        df_shop=[]
-        if not os.path.exists('Output/' + Shop_List[Shop]):
-            os.makedirs('Output/' + Shop_List[Shop])
-        df_shop = (df_final.loc[df_final['Shop']==ShopName])
-        df_shop.to_csv('Output/' + ShopName + '/{}_{}.csv'.format(ShopName, Date), index=False)
-        df_shop.to_html('Output/' + ShopName + '/{}_{}.html'.format(ShopName, Date), index=False)
-
-    # Saving a final overview in csv and html
-    df_final.to_csv('Output/' + "Overview_{}.csv".format(Date), index=False)
-    df_final.to_html('Output/' + "Overview_{}.html".format(Date), index=False)
-
-    # saving to csv file
-    #df_final.to_html("output.html", show_dimensions=True)
 
     # Help Section -------
     # https://ourcodeworld.com/articles/read/240/how-to-edit-and-add-environment-variables-in-windows-for-easy-command-line-access
     # https://www.odoo.com/forum/help-1/question/unable-to-find-wkhtmltopdf-on-this-system-the-report-will-be-shown-in-html-63900
-
-    # PDF Section
-    # highly recommended to go through above url to work this function as it is very unstable lib
-    # converting html to pdf file
-    #pdfkit.from_file('output.html', 'output.pdf')
-
 
 # calling operations_on_csv() function
 operations_on_csv()
