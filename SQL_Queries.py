@@ -55,6 +55,16 @@ class SQL_Queries:
             and TH_Trip_Completed = '1'
     """
 
+    """
+    The SQL_Trip query contains information about the actual, planned and zero deliveries that happened on a trip.
+    In addition it contains information on shop, route and driver so it can later be merged with other dataframes.
+    In detail it contains information from the following tables:
+    JL_Trip_Details, JL_Trip_Header and JL_Employee_Master
+    
+    Zero Deliveries are defined as all deliveries where the planned delivery was bigger than 0 but the actual delivery
+    that happened was 0 (which means no delivery happened). 
+    """
+
     SQL_Trip = """
         select
             td_date 'Date',
@@ -63,6 +73,7 @@ class SQL_Queries:
             sum(TD_Planned_Delivery_Qty) 'Planned_Delivery',
             sum(TD_Actual_Delivered_Qty) 'Actual_Delivery',
             EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'Driver',
+            count(distinct(TD.TD_Customer_ID)) as 'Customer_Count',
             sum(case when (TD_Planned_Delivery_Qty > 0 and TD_Actual_Delivered_Qty = 0) then 1 else 0 end) 'Zero_Delivery'
         from JL_Trip_Details TD
 

@@ -1,5 +1,10 @@
 import os
 
+"""
+Saving the output as a csv and html file for both a general overview and splitted for every shop.
+The html output is for the managers in the water-shop, since its easily accessible, but can't be changed by them.
+The csv output is generated for further analysis.
+"""
 
 class Save_Output:
 

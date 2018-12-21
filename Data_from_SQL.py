@@ -34,7 +34,7 @@ class get_Data:
 
     def get_data_from_sql(self):
 
-        # Creating folders, checking
+        # Creating folders if they don't exist, pulling the data from SQL and store it as csv
         if not os.path.exists(self.SQL_Folder):
             os.makedirs(self.SQL_Folder)
         for Query_Name, Query in self.Queries.items():
