@@ -7,7 +7,7 @@ class get_Data:
 
     # To establish this connection:
     # 1. Download and install ODBC Driver 17
-    # 2. Add connection in ODBC-Datasource Manager with following SQL Sever authentification credentials: UID: jvl_readonly, PW:jvl@@1
+    # 2. Add connection in ODBC-Datasource Manager with following SQL Sever authentification credentials: Server: 182.18.139.135, UID: jvl_readonly, PW:jvl@@1
 
     Conn_SQL = pyodbc.connect('DSN=Jivana_Vitality; UID=jvl_readonly; PWD=jvl@@1;Trusted_Connection=no')  # establishing connection with the pyodbc library
 

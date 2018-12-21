@@ -24,4 +24,4 @@ class Save_Output:
 
         # Saving a final overview in csv and html
         self.df_final.to_csv('Output/' + "Overview_{}.csv".format(self.date), index=False)
-        self.df_final.to_html('Output/' + "Overview_{}.html".format(self.date), index=False, show_dimensions=True)
+        self.df_final.to_html('Output/' + "Overview_{}.html".format(self.date), index=False)

@@ -1,5 +1,4 @@
 import pandas as pd
-import os
 from datetime import date, datetime
 from functools import reduce
 from SQL_Queries import SQL_Queries
@@ -15,7 +14,7 @@ Call_Get_Data = get_Data(SQL_Folder, Queries, date)
 
 Call_Get_Data.get_data_from_sql()
 
-# function convert_sec_to_time to convert seconds into hours:minutes
+# The function convert_sec_to_time converts seconds into hours:minutes
 def convert_sec_to_time(x):
     t = int(x)
     day = t // 86400
@@ -23,12 +22,10 @@ def convert_sec_to_time(x):
     minute = (t - ((day * 86400) + (hour * 3600))) // 60
     return "{0}:{1}".format(hour, minute)
 
-
 # function days_between to calculate absolute time difference between start and end trip in second format.
 def days_between(d1, d2):
     d1 = datetime.strptime(d1, "%Y-%m-%d %H:%M:%S")
     d2 = datetime.strptime(d2, "%Y-%m-%d %H:%M:%S")
-    # sec=get_sec(abs(d2 - d1))
     return (abs(d2 - d1).seconds)
 
 # operations_on_csv function to perform operation on csv datasheet
@@ -42,6 +39,7 @@ def operations_on_csv():
     DF_TripHeader['Delivery_time'] = DF_TripHeader.apply(
         lambda row: (int(days_between(row.Trip_StartTime, row.Trip_EndTime))), axis=1)
 
+    # The ad stands for Actual Delivery, pd stands for Planned Delivery and Zero stands for Zero Delivery (Planned Delivery > 0 and Actual Delivery = 0)
     df_mean_ad = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].mean().round(1)
     df_mean_ad.columns = ['Shop','Route','Driver','Avg Delivery']
     df_mean_zero = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Zero_Delivery'].mean().round(1)
@@ -49,10 +47,10 @@ def operations_on_csv():
     df_max = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].max()
     df_count = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].count()
     df_sum = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].sum()
-    df_planned_mean = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Planned_Delivery'].mean().round(1)
+    df_mean_pd = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Planned_Delivery'].mean().round(1)
 
     df_final = reduce(lambda left, right: pd.merge(left, right, on=['Route', 'Driver']),
-                     [df_count, df_sum, df_mean_zero, df_mean_ad, df_planned_mean, df_min, df_max])
+                     [df_count, df_sum, df_mean_zero, df_mean_ad, df_mean_pd, df_min, df_max])
 
     # Filling NaN value with the value '0' to avoid errors
     DF_TripHeader['Delivery_time'] = DF_TripHeader['Delivery_time'].fillna(0)
@@ -113,5 +111,4 @@ def operations_on_csv():
     # https://ourcodeworld.com/articles/read/240/how-to-edit-and-add-environment-variables-in-windows-for-easy-command-line-access
     # https://www.odoo.com/forum/help-1/question/unable-to-find-wkhtmltopdf-on-this-system-the-report-will-be-shown-in-html-63900
 
-# calling operations_on_csv() function
 operations_on_csv()
