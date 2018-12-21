@@ -7,6 +7,10 @@ from functools import reduce
 import os
 import glob
 
+# To establish this connection:
+# 1. Download and install ODBC Driver 17
+# 2. Add connection in ODBC-Datasource Manager with following SQL Sever authentification credentials: UID: jvl_readonly, PW:jvl@@1
+
 Conn_SQL = pyodbc.connect(
     'DSN=Jivana_Vitality; UID=jvl_readonly; PWD=jvl@@1;Trusted_Connection=no')  # establishing connection with the pyodbc library
 
@@ -92,9 +96,6 @@ Queries = {"SQL_TripHeader": SQL_TripHeader, "SQL_Trip": SQL_Trip}
 SQL_Folder = 'SQL_RawData/'
 Date = str(date.today())
 
-
-# function convert_sec_to_time to convert seconds into hours:minutes
-
 # While working in India we often had the problem that our internet would just stop working for a few hours
 # so I decided to store the content of the queries locally, so if I was able to access the data at least
 # once a day, I was still able work with the data for the rest of that day. In addition to this it made re-
@@ -133,8 +134,8 @@ def store_csv_to_df():
     # Read data from file 'SQL_Trip_2018-12-16.csv'
     # (in the same directory that your python process is based)
     # Control delimiters, rows, column names with read_csv (see later)
-    dataframe_one = pd.read_csv(SQL_Folder + "SQL_Trip_2018-12-20.csv")
-    dataframe_two = pd.read_csv(SQL_Folder + "SQL_TripHeader_2018-12-20.csv")
+    dataframe_one = pd.read_csv(SQL_Folder + "SQL_Trip_{}.csv".format(Date))
+    dataframe_two = pd.read_csv(SQL_Folder + "SQL_TripHeader_{}.csv".format(Date))
 
 
 # calling store_csv_to_df() function
@@ -240,8 +241,8 @@ def operations_on_csv():
         if not os.path.exists(Shop_List[Shop]):
             os.makedirs(Shop_List[Shop])
         df_shop = (df_final.loc[df_final['Shop']==ShopName])
-        df_shop.to_csv(ShopName + '/{}.csv'.format(ShopName), index=False)
-        df_shop.to_html(ShopName + '/{}.html'.format(ShopName), index=False)
+        df_shop.to_csv(ShopName + '/{}_{}.csv'.format(ShopName, Date), index=False)
+        df_shop.to_html(ShopName + '/{}_{}.html'.format(ShopName, Date), index=False)
 
     # Saving a final overview in csv and html
     df_final.to_csv("Overview_{}.csv".format(Date), index=False)
