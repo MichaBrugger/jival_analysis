@@ -87,7 +87,7 @@ def operations_on_csv():
     df_time_mean = DF_TripHeader.groupby(['Shop_Name', 'Route_Name', 'Driver_Name'], as_index=False)['Delivery_time'].mean()
 
     # Calculating the average deliveries per hour before converting the average time to an hour:minute format
-    df_final['Avg Delivery/h'] = (df_final['Avg Delivery'] / (df_time_mean['Delivery_time']/3600)).round(2)
+    df_final['Avg Delivery/h'] = (df_final['Avg Delivery'] / (df_time_mean['Delivery_time'])*3600).round(1)
     df_time_mean['avg_delivery_time'] = df_time_mean.apply(lambda row: (convert_sec_to_time(row.Delivery_time)), axis=1)
 
     # Outer joining the df_final with the df_time_mean based on the shop, route and driver value.

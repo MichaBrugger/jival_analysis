@@ -25,8 +25,8 @@ class Save_Output:
                 os.makedirs('Output/' + Shop_List[Shop])
             df_shop = (self.df_final.loc[self.df_final['Shop']==ShopName])
             df_shop.to_csv('Output/' + ShopName + '/{}_{}.csv'.format(ShopName, self.date), index=False)
-            df_shop.to_html('Output/' + ShopName + '/{}_{}.html'.format(ShopName, self.date), index=False)
+            df_shop.to_html('Output/' + ShopName + '/{}_{}.html'.format(ShopName, self.date), index=False, justify='left')
 
         # Saving a final overview in csv and html
         self.df_final.to_csv('Output/' + "Overview_{}.csv".format(self.date), index=False)
-        self.df_final.to_html('Output/' + "Overview_{}.html".format(self.date), index=False)
+        self.df_final.to_html('Output/' + "Overview_{}.html".format(self.date), index=False, justify='left')
