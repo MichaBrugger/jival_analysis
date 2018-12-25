@@ -13,7 +13,6 @@ that it always deletes old files of the same file path/name but with a different
 files with totally different names are left untouched, in case someone stores something different in the folder.
 """
 
-
 class get_Data:
 
     """
@@ -46,7 +45,7 @@ class get_Data:
                         print('{} removed'.format(filename))
                     except:
                         print('Remove {} is not possible'.format(Query_Name))
-                pd.read_sql_query(Query, self.Conn_SQL).to_csv(self.SQL_Folder + csv_name)
+                pd.read_sql_query(Query, self.Conn_SQL).to_csv(self.SQL_Folder + csv_name, index=False)
                 print('{} downloaded successful'.format(Query_Name))
             else:
                 print('{} already downloaded'.format(Query_Name))
@@ -56,6 +55,8 @@ class get_Data:
         # Reading data from different csv files to df and make them accessible for Main_Analysis
         DF_Trip = pd.read_csv(self.SQL_Folder + "SQL_Trip_{}.csv".format(self.date))
         DF_TripHeader = pd.read_csv(self.SQL_Folder + "SQL_TripHeader_{}.csv".format(self.date))
-        dataframes = [DF_Trip, DF_TripHeader]
+        DF_CustomerAccounts = pd.read_csv(self.SQL_Folder + "SQL_CustomerAccounts_{}.csv".format(self.date))
+        dataframes = [DF_Trip, DF_TripHeader, DF_CustomerAccounts]
         print('Dataframes stored')
+
         return dataframes

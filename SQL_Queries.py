@@ -17,11 +17,11 @@ class SQL_Queries:
     SQL_TripHeader = """
         select 
         convert(smalldatetime,TH_Trip_Date,108) as 'Trip_Date', 
-        th_shop_description as 'Shop_Name', 
-        th_route_description as 'Route_Name', 
+        th_shop_description as 'TH_Shop', 
+        th_route_description as 'TH_Route', 
         convert(smalldatetime,first_load_time,108) as 'Trip_StartTime', 
         convert(smalldatetime,driver_completed_datetime,108) as 'Trip_EndTime', 
-        EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'Driver_Name'
+        EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'TH_Driver'
         from JL_Trip_Header TH 
         
         inner join( 
@@ -68,11 +68,11 @@ class SQL_Queries:
     SQL_Trip = """
         select
             td_date 'Date',
-            TD_Shop_Description 'Shop',
-            TD_Route_Description 'Route',
+            TD_Shop_Description 'TD_Shop',
+            TD_Route_Description 'TD_Route',
             sum(TD_Planned_Delivery_Qty) 'Planned_Delivery',
             sum(TD_Actual_Delivered_Qty) 'Actual_Delivery',
-            EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'Driver',
+            EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'TD_Driver',
             count(distinct(TD.TD_Customer_ID)) as 'Customer_Count',
             sum(case when (TD_Planned_Delivery_Qty > 0 and TD_Actual_Delivered_Qty = 0) then 1 else 0 end) 'Zero_Delivery'
         from JL_Trip_Details TD
@@ -94,8 +94,41 @@ class SQL_Queries:
         group by TD_Date, TD_Shop_Description, TD_Route_Description, EM_Employee_First_Name + ' ' + EM_Employee_Last_Name
     """
 
+    """
+    The SQL_CustomerAccounts Query contains information about the current total outstanding invoices per route.
+    """
+
+    SQL_CustomerAccounts = """
+        select
+        
+            GL_SHOP_DESCRIPTION 'CA_Shop',
+            GL_Route_Description 'CA_Route',
+            sum(CA_Open_Invoice) as 'Open Invoices'
+        
+        from JL_Customer_Accounts
+        
+        inner join JL_Geo_Location_Master
+        on JL_Customer_Accounts.CA_Customer_ID = JL_Geo_Location_Master.GL_Entity_Link
+        
+        where CA_Default_Flag = '1'
+        and CA_Delete_Flag = '0'
+        and GL_Default_Flag = '1'
+        and GL_Delete_Flag = '0'
+        and GL_Entity_Type = 'customer'
+        and gl_route_description not like 'Ot route'
+        and gl_route_description not like 'inactive%'
+        and GL_SHOP_DESCRIPTION is not null
+        and GL_Route_Description is not null
+        
+        group by GL_SHOP_DESCRIPTION, GL_Route_Description
+        order by GL_SHOP_DESCRIPTION
+    """
+
     def get_SQL_TripHeader(self):
         return self.SQL_TripHeader
 
     def get_SQL_Trip(self):
         return self.SQL_Trip
+
+    def get_SQL_CustomerAccounts(self):
+        return self.SQL_CustomerAccounts

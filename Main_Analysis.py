@@ -1,14 +1,15 @@
 import pandas as pd
-from datetime import date, datetime
-from functools import reduce
+from datetime import date
 from SQL_Queries import SQL_Queries
 from Data_from_SQL import get_Data
 from Save_Output import Save_Output
+from Calculations.Calc_Delivery import Calc_Delivery
+from Calculations.Calc_Time import Calc_Time
 
 """
 The following code is meant to be the baseline for a future driver and route analysis for Jivana Vitality. I wrote it
 during my internship as a project for the HSG XCamp course. While the current version is not yet capable of the in-depth
-analysis that is the goal for the future, it already serves as an overview for both managers and executives to see how
+analysis that is the goal for the future, it  already serves as an overview for both managers and executives to see how
 certain routes and drivers are performing.
 
 To add some context to the project:
@@ -25,97 +26,65 @@ addition Jivana is currently planning expansions to other cities, which makes a 
 
 # Calling the stored SQL_Queries and saving them into a dictionary
 Call_SQL_Queries = SQL_Queries()
-Queries = {"SQL_TripHeader": Call_SQL_Queries.SQL_TripHeader, "SQL_Trip": Call_SQL_Queries.SQL_Trip}
+Queries = {"SQL_TripHeader": Call_SQL_Queries.SQL_TripHeader, "SQL_Trip": Call_SQL_Queries.SQL_Trip, "SQL_CustomerAccounts": Call_SQL_Queries.SQL_CustomerAccounts}
 
 SQL_Folder = 'Output/SQL_Data/'
 date = str(date.today())
 
 # Pulling the data from SQL, storing it into a csv and read that csv into a dataframe. Following args needed:
-# # SQL_Folder - Folder where the raw data gets stored and accessed from
-# # Queries - Dictionary, containing name and code of the queries
-# # date - today's date as a string
+# SQL_Folder - Folder where the raw data gets stored and accessed from
+# Queries - Dictionary, containing name and code of the queries
+# date - today's date as a string
 Call_Get_Data = get_Data(SQL_Folder, Queries, date)
 Call_Get_Data.get_data_from_sql()
 
-
-def convert_sec_to_time(x):
-    # Convert seconds into hours:minutes
-    t = int(x)
-    day = t // 86400
-    hour = (t - (day * 86400)) // 3600
-    minute = (t - ((day * 86400) + (hour * 3600))) // 60
-    return "{0}:{1}".format(hour, minute)
-
-
-def days_between(d1, d2):
-    # Calculate absolute time difference between start and end trip in second format
-    d1 = datetime.strptime(d1, "%Y-%m-%d %H:%M:%S")
-    d2 = datetime.strptime(d2, "%Y-%m-%d %H:%M:%S")
-    return abs(d2 - d1).seconds
-
-
 def operations_on_csv():
-    # Main calculations/merging of different dataframes from csv-files
+    # Main calculations/merging of different data frames from csv-files
 
-    # Calling the stored dataframes
+    # Calling the stored data frames
     dataframes = Call_Get_Data.store_csv_to_df()
     DF_Trip = dataframes[0]
     DF_TripHeader = dataframes[1]
+    DF_CustomerAccounts = dataframes[2]
 
-    # ad stands for Actual Delivery, pd stands for Planned Delivery and zero stands for Zero Delivery (Planned Delivery > 0 and Actual Delivery = 0)
-    df_mean_ad = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].mean().round(1)
-    df_mean_ad.columns = ['Shop','Route','Driver','Avg Delivery']
-    df_mean_customers = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Customer_Count'].mean().round(1)
-    df_mean_customers.columns = ['Shop', 'Route', 'Driver', 'Avg Customer Count']
-    df_mean_zero = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Zero_Delivery'].mean().round(1)
-    df_min = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].min()
-    df_max = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].max()
-    df_count = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].count()
-    df_sum = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].sum()
-    df_mean_pd = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Planned_Delivery'].mean().round(1)
+    """
+    Since there are more and more calculations coming and I started to lose the overview, so I decided to split
+    each data source with its calculations into its own class, so I only call the final 'clean' data frame for each
+    data source into my main file. Here I finally perform the calculations where data sources 'interact' with each
+    other. This makes it easier to perform changes on the individual data frames and makes the whole thing more
+    structured for me.
+    """
 
-    # Establishing final dataframe (to which later other dataframes and calculations will be added)
-    df_final = reduce(lambda left, right: pd.merge(left, right, on=['Shop','Route', 'Driver']),
-                     [df_count, df_sum, df_mean_zero, df_mean_ad, df_mean_pd, df_min, df_max, df_mean_customers])
+    Call_Calc_Delivery = Calc_Delivery(DF_Trip)
+    df_delivery = Call_Calc_Delivery.calc()
 
-    # apply function to calculate delivery time for calculating average delivery time
-    # fill missing values with 0, so I dont run into an error if a trip is still ongoing and has no end-time yet
-    DF_TripHeader['Delivery_time'] = DF_TripHeader.apply(lambda row: (int(days_between(row.Trip_StartTime, row.Trip_EndTime))), axis=1)
-    DF_TripHeader['Delivery_time'] = DF_TripHeader['Delivery_time'].fillna(0)
+    Call_Calc_Time = Calc_Time(DF_TripHeader)
+    df_time = Call_Calc_Time.calc()
 
-    # Calculating average delivery time per route/driver
-    df_time_mean = DF_TripHeader.groupby(['Shop_Name', 'Route_Name', 'Driver_Name'], as_index=False)['Delivery_time'].mean()
+    # Inner joining df_delivery and df_time based on the shop, route and driver value and establishing final data frame
+    df_final = pd.merge(df_delivery, df_time, how='inner',
+                        left_on=['TD_Shop', 'TD_Route', 'TD_Driver'], right_on=['TH_Shop', 'TH_Route', 'TH_Driver'])
 
-    # Outer joining the df_final with the df_time_mean based on the shop, route and driver value.
-    # Using the outer join in case there is any difference between the two data sources (technically shouldn't happen)
-    # I would still have all the data in my frame
-    df_final = pd.merge(df_final, df_time_mean, how='inner',
-                        left_on=['Shop', 'Route', 'Driver'], right_on=['Shop_Name', 'Route_Name', 'Driver_Name'])
+    # Dropping dublicated columns from this merge
+    df_final = df_final.drop(['TH_Shop', 'TH_Route', 'TH_Driver'], axis=1)
 
-    # Calculating the average deliveries per hour before converting the average time to an hour:minute format
-    #df_final['Avg Delivery/h'] = df_final['Avg Delivery']/df_final['Delivery_time']
+    # Inner joining the outstanding customer invoices per route to the existing final data frame
+    df_final = pd.merge(df_final, DF_CustomerAccounts, how='inner',
+                        left_on=['TD_Shop', 'TD_Route'], right_on=['CA_Shop', 'CA_Route'])
+
+    # Dropping duplicated columns from this merge
+    df_final = df_final.drop(['CA_Shop', 'CA_Route'], axis=1)
+
+    # Performing Calculations that are only possible with the merged data frames
+    # 1. Calculating the average deliveries per hour before converting the average time to an hour:minute format
     df_final['Avg Delivery/h'] = ((df_final['Avg Delivery'] / (df_final['Delivery_time']))*3600).round(1)
-    df_final['avg_delivery_time'] = df_final.apply(lambda row: (convert_sec_to_time(row.Delivery_time)), axis=1)
-
-    # Calculating the percentage average amount of 0 deliveries
-    # Done by taking the average amount of 0 deliveries divided by the average amount of customers for this route
-    df_final['0 Delivery (%)'] = (df_final['Zero_Delivery']/df_final['Avg Customer Count']*100).round(1)
-
-    # Dropping columns that are not needed at this point anymore
-    df_final = df_final.drop(['Shop_Name', 'Delivery_time', 'Route_Name', 'Avg Customer Count', 'Driver_Name'], axis=1)
-
-    # Renaming the the columns with proper names and rearranging them in logical order
-    df_final.columns = ['Shop', 'Route', 'Driver', 'Amount of Trips', 'Total Deliveries', 'Avg 0 Delivery', 'Avg Delivery',
-                        'Avg Planned', 'Min Delivery', 'Max Delivery', 'Avg Delivery/h', 'Avg Time (h:m)', 'Avg 0 Delivery (%)']
-    df_final = df_final[['Shop', 'Route', 'Driver', 'Amount of Trips', 'Avg Planned', 'Avg Delivery', 'Avg 0 Delivery (%)',
-                         'Avg Delivery/h', 'Avg Time (h:m)', 'Total Deliveries', 'Min Delivery', 'Max Delivery', 'Avg 0 Delivery']]
 
     # Sorting the values for better overview
-    df_final = df_final.sort_values(['Shop', 'Route', 'Amount of Trips'], ascending=False)
+    df_final = df_final.sort_values(['TD_Shop', 'TD_Route', 'Amount of Trips'], ascending=False)
 
-    # splitting (by shop) and saving the output-dataframes. Following args needed:
+    # splitting by shop and saving the output-data frames. Following args needed:
     # # date - today's date as a string
-    # df_final - final dataframe that contains all data that is to be displayed
+    # df_final - final data frame that contains all data that is to be displayed
     save = Save_Output(date, df_final)
     save.save_to_folder()
 
