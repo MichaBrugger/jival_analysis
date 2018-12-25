@@ -65,17 +65,17 @@ def operations_on_csv():
     # ad stands for Actual Delivery, pd stands for Planned Delivery and zero stands for Zero Delivery (Planned Delivery > 0 and Actual Delivery = 0)
     df_mean_ad = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].mean().round(1)
     df_mean_ad.columns = ['Shop','Route','Driver','Avg Delivery']
-    df_mean_customers = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Customer_Count'].mean().round(1)
-    df_mean_customers.columns = ['Route', 'Driver', 'Avg Customer Count']
-    df_mean_zero = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Zero_Delivery'].mean().round(1)
-    df_min = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].min()
-    df_max = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].max()
-    df_count = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].count()
-    df_sum = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Actual_Delivery'].sum()
-    df_mean_pd = DF_Trip.groupby(['Route', 'Driver'], as_index=False)['Planned_Delivery'].mean().round(1)
+    df_mean_customers = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Customer_Count'].mean().round(1)
+    df_mean_customers.columns = ['Shop', 'Route', 'Driver', 'Avg Customer Count']
+    df_mean_zero = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Zero_Delivery'].mean().round(1)
+    df_min = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].min()
+    df_max = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].max()
+    df_count = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].count()
+    df_sum = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Actual_Delivery'].sum()
+    df_mean_pd = DF_Trip.groupby(['Shop','Route', 'Driver'], as_index=False)['Planned_Delivery'].mean().round(1)
 
     # Establishing final dataframe (to which later other dataframes and calculations will be added)
-    df_final = reduce(lambda left, right: pd.merge(left, right, on=['Route', 'Driver']),
+    df_final = reduce(lambda left, right: pd.merge(left, right, on=['Shop','Route', 'Driver']),
                      [df_count, df_sum, df_mean_zero, df_mean_ad, df_mean_pd, df_min, df_max, df_mean_customers])
 
     # apply function to calculate delivery time for calculating average delivery time
@@ -93,7 +93,7 @@ def operations_on_csv():
                         left_on=['Shop', 'Route', 'Driver'], right_on=['Shop_Name', 'Route_Name', 'Driver_Name'])
 
     # Calculating the average deliveries per hour before converting the average time to an hour:minute format
-    #df_final['Avg Delivery/h'] = df_final['Avg Delivery']/df_time_mean['Delivery_time']
+    #df_final['Avg Delivery/h'] = df_final['Avg Delivery']/df_final['Delivery_time']
     df_final['Avg Delivery/h'] = ((df_final['Avg Delivery'] / (df_final['Delivery_time']))*3600).round(1)
     df_final['avg_delivery_time'] = df_final.apply(lambda row: (convert_sec_to_time(row.Delivery_time)), axis=1)
 
@@ -105,9 +105,9 @@ def operations_on_csv():
     df_final = df_final.drop(['Shop_Name', 'Delivery_time', 'Route_Name', 'Avg Customer Count', 'Driver_Name'], axis=1)
 
     # Renaming the the columns with proper names and rearranging them in logical order
-    df_final.columns = ['Route', 'Driver', 'Amount of Trips', 'Total Deliveries', 'Avg 0 Delivery', 'Shop', 'Avg Delivery',
-                        'Avg Planned', 'Min Delivery', 'Max Delivery', 'Avg Delivery/h', 'Avg Time (h:m)', 'Avg 0 Delivery ()']
-    df_final = df_final[['Shop', 'Route', 'Driver', 'Amount of Trips', 'Avg Planned', 'Avg Delivery', 'Avg 0 Delivery ()',
+    df_final.columns = ['Shop', 'Route', 'Driver', 'Amount of Trips', 'Total Deliveries', 'Avg 0 Delivery', 'Avg Delivery',
+                        'Avg Planned', 'Min Delivery', 'Max Delivery', 'Avg Delivery/h', 'Avg Time (h:m)', 'Avg 0 Delivery (%)']
+    df_final = df_final[['Shop', 'Route', 'Driver', 'Amount of Trips', 'Avg Planned', 'Avg Delivery', 'Avg 0 Delivery (%)',
                          'Avg Delivery/h', 'Avg Time (h:m)', 'Total Deliveries', 'Min Delivery', 'Max Delivery', 'Avg 0 Delivery']]
 
     # Sorting the values for better overview
