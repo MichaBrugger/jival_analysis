@@ -86,15 +86,16 @@ def operations_on_csv():
     # Calculating average delivery time per route/driver
     df_time_mean = DF_TripHeader.groupby(['Shop_Name', 'Route_Name', 'Driver_Name'], as_index=False)['Delivery_time'].mean()
 
-    # Calculating the average deliveries per hour before converting the average time to an hour:minute format
-    df_final['Avg Delivery/h'] = (df_final['Avg Delivery'] / (df_time_mean['Delivery_time'])*3600).round(1)
-    df_time_mean['avg_delivery_time'] = df_time_mean.apply(lambda row: (convert_sec_to_time(row.Delivery_time)), axis=1)
-
     # Outer joining the df_final with the df_time_mean based on the shop, route and driver value.
     # Using the outer join in case there is any difference between the two data sources (technically shouldn't happen)
     # I would still have all the data in my frame
-    df_final = pd.merge(df_final, df_time_mean, how='outer',
+    df_final = pd.merge(df_final, df_time_mean, how='inner',
                         left_on=['Shop', 'Route', 'Driver'], right_on=['Shop_Name', 'Route_Name', 'Driver_Name'])
+
+    # Calculating the average deliveries per hour before converting the average time to an hour:minute format
+    #df_final['Avg Delivery/h'] = df_final['Avg Delivery']/df_time_mean['Delivery_time']
+    df_final['Avg Delivery/h'] = ((df_final['Avg Delivery'] / (df_final['Delivery_time']))*3600).round(1)
+    df_final['avg_delivery_time'] = df_final.apply(lambda row: (convert_sec_to_time(row.Delivery_time)), axis=1)
 
     # Calculating the percentage average amount of 0 deliveries
     # Done by taking the average amount of 0 deliveries divided by the average amount of customers for this route
@@ -105,8 +106,8 @@ def operations_on_csv():
 
     # Renaming the the columns with proper names and rearranging them in logical order
     df_final.columns = ['Route', 'Driver', 'Amount of Trips', 'Total Deliveries', 'Avg 0 Delivery', 'Shop', 'Avg Delivery',
-                        'Avg Planned', 'Min Delivery', 'Max Delivery', 'Avg Delivery/h', 'Avg Time (h:m)', 'Avg 0 Delivery (%)']
-    df_final = df_final[['Shop', 'Route', 'Driver', 'Amount of Trips', 'Avg Planned', 'Avg Delivery', 'Avg 0 Delivery (%)',
+                        'Avg Planned', 'Min Delivery', 'Max Delivery', 'Avg Delivery/h', 'Avg Time (h:m)', 'Avg 0 Delivery ()']
+    df_final = df_final[['Shop', 'Route', 'Driver', 'Amount of Trips', 'Avg Planned', 'Avg Delivery', 'Avg 0 Delivery ()',
                          'Avg Delivery/h', 'Avg Time (h:m)', 'Total Deliveries', 'Min Delivery', 'Max Delivery', 'Avg 0 Delivery']]
 
     # Sorting the values for better overview
