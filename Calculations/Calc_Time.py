@@ -28,7 +28,7 @@ class Calc_Time:
 
         # Calculating average delivery time per route/driver
         df_time = self.DF_TripHeader.groupby(['TH_Shop', 'TH_Route', 'TH_Driver'], as_index=False)['Delivery_time'].mean().round(1)
-        df_time['Avg Delivery Time'] = df_time.apply(lambda row: (convert_sec_to_time(row.Delivery_time)), axis=1)
+        df_time['Ø Time (h:m)'] = df_time.apply(lambda row: (convert_sec_to_time(row.Delivery_time)), axis=1)
 
         #returning dataframe for all time-related values
         return df_time

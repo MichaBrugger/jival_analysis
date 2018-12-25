@@ -65,8 +65,8 @@ def operations_on_csv():
     df_final = pd.merge(df_delivery, df_time, how='inner',
                         left_on=['TD_Shop', 'TD_Route', 'TD_Driver'], right_on=['TH_Shop', 'TH_Route', 'TH_Driver'])
 
-    # Dropping dublicated columns from this merge
-    df_final = df_final.drop(['TH_Shop', 'TH_Route', 'TH_Driver'], axis=1)
+    # Dropping dublicated/unneeded columns from this merge
+    df_final = df_final.drop(['TH_Shop', 'TH_Route', 'TH_Driver', 'Delivery_time'], axis=1)
 
     # Inner joining the outstanding customer invoices per route to the existing final data frame
     df_final = pd.merge(df_final, DF_CustomerAccounts, how='inner',
@@ -77,10 +77,10 @@ def operations_on_csv():
 
     # Performing Calculations that are only possible with the merged data frames
     # 1. Calculating the average deliveries per hour before converting the average time to an hour:minute format
-    df_final['Avg Delivery/h'] = ((df_final['Avg Delivery'] / (df_final['Delivery_time']))*3600).round(1)
+    df_final['Ø Delivery/h'] = ((df_final['Ø Delivery'] / (df_time['Delivery_time']))*3600).round(1)
 
     # Sorting the values for better overview
-    df_final = df_final.sort_values(['TD_Shop', 'TD_Route', 'Amount of Trips'], ascending=False)
+    df_final = df_final.sort_values(['TD_Shop', 'TD_Route', '# Trips'], ascending=False)
 
     # splitting by shop and saving the output-data frames. Following args needed:
     # # date - today's date as a string
