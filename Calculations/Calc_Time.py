@@ -31,4 +31,5 @@ class Calc_Time:
         df_time['Ø Time (h:m)'] = df_time.apply(lambda row: (convert_sec_to_time(row.Delivery_time)), axis=1)
 
         #returning dataframe for all time-related values
+        print('DF_Time created')
         return df_time

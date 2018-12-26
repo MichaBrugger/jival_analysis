@@ -40,4 +40,5 @@ class Calc_Delivery:
                                         'Ø 0 Delivery'], axis=1)
 
         #returning data frame for all delivery-related values
+        print('DF_Delivery created')
         return df_delivery
