@@ -97,7 +97,7 @@ def operations_on_csv():
     df_final['Ø Delivery/h'] = ((df_final['Ø Delivery'] / (df_time['Delivery_time']))*3600).round(1)
 
     # Sorting the values for better overview
-    df_final = df_final.sort_values(['TD_Shop', 'Ø Delivery/h'], ascending=False)
+    df_final = df_final.sort_values(['TD_Shop', 'TD_Route', 'Ø Delivery/h'], ascending=False)
 
     # Formatting certain columns for better readability
     df_final['Open Invoices'] = df_final['Open Invoices'].map(lambda x: "INR {0:,.0f}".format(x))

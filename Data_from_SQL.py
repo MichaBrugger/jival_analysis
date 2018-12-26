@@ -2,6 +2,7 @@ import os
 import glob
 import pyodbc
 import pandas as pd
+from SQL_Queries import SQL_Queries
 
 """
 While working in India we often had the problem that our internet would just stop working for a few hours so
@@ -24,6 +25,8 @@ class get_Data:
 
     # establishing connection through the pyodbc library
     Conn_SQL = pyodbc.connect('DSN=Jivana_Vitality; UID=jvl_readonly; PWD=jvl@@1;Trusted_Connection=no')
+
+    daysback = SQL_Queries.daysback
 
     def __init__(self, SQL_Folder, Queries, date):
 

@@ -14,17 +14,18 @@ class SQL_Queries:
     that day on that route to the time he needed to complete the trip.
     """
 
-    #with daysback you can define, how many days back the analyis should be done
-    daysback = '14'
+    # Defining, how many days back the analyis should be done for all queries that are 'time-related'
+    # Currently, when data for that day is already loaded, it has no influence, needs to be changed at some point
+    daysback = input('How many days?\n')
 
     SQL_TripHeader = """
         select 
-        convert(smalldatetime,TH_Trip_Date,108) as 'Trip_Date', 
-        th_shop_description as 'TH_Shop', 
-        th_route_description as 'TH_Route', 
-        convert(smalldatetime,first_load_time,108) as 'Trip_StartTime', 
-        convert(smalldatetime,driver_completed_datetime,108) as 'Trip_EndTime', 
-        EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'TH_Driver'
+            convert(smalldatetime,TH_Trip_Date,108) as 'Trip_Date', 
+            th_shop_description as 'TH_Shop', 
+            th_route_description as 'TH_Route', 
+            convert(smalldatetime,first_load_time,108) as 'Trip_StartTime', 
+            convert(smalldatetime,driver_completed_datetime,108) as 'Trip_EndTime', 
+            EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'TH_Driver'
         from JL_Trip_Header TH 
         
         inner join( 
