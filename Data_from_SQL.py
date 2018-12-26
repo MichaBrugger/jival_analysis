@@ -56,7 +56,8 @@ class get_Data:
         DF_Trip = pd.read_csv(self.SQL_Folder + "SQL_Trip_{}.csv".format(self.date))
         DF_TripHeader = pd.read_csv(self.SQL_Folder + "SQL_TripHeader_{}.csv".format(self.date))
         DF_CustomerAccounts = pd.read_csv(self.SQL_Folder + "SQL_CustomerAccounts_{}.csv".format(self.date))
-        dataframes = [DF_Trip, DF_TripHeader, DF_CustomerAccounts]
+        DF_CustomerMaster = pd.read_csv(self.SQL_Folder + "SQL_CustomerMaster_{}.csv".format(self.date))
+        dataframes = [DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_CustomerMaster]
         print('Dataframes stored')
 
         return dataframes

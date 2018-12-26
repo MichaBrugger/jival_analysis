@@ -124,6 +124,22 @@ class SQL_Queries:
         order by GL_SHOP_DESCRIPTION
     """
 
+    """
+    The SQL_CustomerMaster Query provides information on how many new customers a driver acquired in a certain time frame.
+    This is accessible since we store the first contact person (CM_Customer_Label) as well as the "joining date"
+    (CM_CreationDate) of each customer in our database.
+    """
+
+    SQL_CustomerMaster = """
+        select 
+            cm_customer_label 'CM_Driver',
+            count(distinct(CM_Customer_id)) as '# New Customers'
+        from jl_customer_master
+        where CM_CreationDate > DATEADD(day,-14,getdate())
+        group by CM_Customer_Label
+    """
+
+
     def get_SQL_TripHeader(self):
         return self.SQL_TripHeader
 
@@ -132,3 +148,6 @@ class SQL_Queries:
 
     def get_SQL_CustomerAccounts(self):
         return self.SQL_CustomerAccounts
+
+    def get_SQL_CustomerMaster(self):
+        return self.SQL_CustomerMaster

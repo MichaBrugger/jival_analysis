@@ -16,8 +16,8 @@ To add some context to the project:
 Jivana Vitality India Pvt. Ltd. is an Indian for-profit company providing affordable drinking water. It was founded in
 2014 by three HSG Students and has since established itself as the biggest water provider in Udaipur, India.
 In both rural and urban parts of India access to affordable, clean drinking water is still a big problem and many people
-have problems with diseases caused by polluted water. Jivana Vitality tackles this problem by providing bottle -water
-quality water for the fraction of the price that bottled water costs, thus making it affordable for everyone. Through five
+have problems with diseases caused by polluted water. Jivana Vitality tackles this problem by providing bottled - water
+quality water for a fraction of the price that bottled water costs, thus making it affordable for everyone. Through five
 water-shops in Udaipur we deliver 80'000 liters of water daily to over 5000 active customers directly to their doorstep.
 
 With around 35 routes, each 'driven' by multiple drivers, a performance overview is getting more and more difficult. In
@@ -26,7 +26,8 @@ addition Jivana is currently planning expansions to other cities, which makes a 
 
 # Calling the stored SQL_Queries and saving them into a dictionary
 Call_SQL_Queries = SQL_Queries()
-Queries = {"SQL_TripHeader": Call_SQL_Queries.SQL_TripHeader, "SQL_Trip": Call_SQL_Queries.SQL_Trip, "SQL_CustomerAccounts": Call_SQL_Queries.SQL_CustomerAccounts}
+Queries = {"SQL_TripHeader": Call_SQL_Queries.SQL_TripHeader, "SQL_Trip": Call_SQL_Queries.SQL_Trip,
+           "SQL_CustomerAccounts": Call_SQL_Queries.SQL_CustomerAccounts, "SQL_CustomerMaster": Call_SQL_Queries.get_SQL_CustomerMaster()}
 
 SQL_Folder = 'Output/SQL_Data/'
 date = str(date.today())
@@ -46,6 +47,7 @@ def operations_on_csv():
     DF_Trip = dataframes[0]
     DF_TripHeader = dataframes[1]
     DF_CustomerAccounts = dataframes[2]
+    DF_CustomerMaster = dataframes[3]
 
     """
     Since there are more and more calculations coming and I started to lose the overview, so I decided to split
@@ -75,6 +77,13 @@ def operations_on_csv():
     # Dropping duplicated columns from this merge
     df_final = df_final.drop(['CA_Shop', 'CA_Route'], axis=1)
 
+    # Left joining the new customers per driver to the existing final data frame
+    df_final = pd.merge(df_final, DF_CustomerMaster, how='left',
+                        left_on=['TD_Driver'], right_on=['CM_Driver'])
+
+    # Dropping duplicated columns from this merge
+    df_final = df_final.drop(['CM_Driver'], axis=1)
+
     # Performing Calculations that are only possible with the merged data frames
     # 1. Calculating the average deliveries per hour before converting the average time to an hour:minute format
     df_final['Ø Delivery/h'] = ((df_final['Ø Delivery'] / (df_time['Delivery_time']))*3600).round(1)
@@ -84,6 +93,7 @@ def operations_on_csv():
 
     # Formatting certain columns for better readability
     df_final['Open Invoices'] = df_final['Open Invoices'].map(lambda x: "INR {0:,.0f}".format(x))
+    df_final['# New Customers'] = df_final['# New Customers'].fillna('')
 
     # splitting by shop and saving the output-data frames. Following args needed:
     # # date - today's date as a string
