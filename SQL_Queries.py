@@ -14,6 +14,9 @@ class SQL_Queries:
     that day on that route to the time he needed to complete the trip.
     """
 
+    #with daysback you can define, how many days back the analyis should be done
+    daysback = '14'
+
     SQL_TripHeader = """
         select 
         convert(smalldatetime,TH_Trip_Date,108) as 'Trip_Date', 
@@ -44,7 +47,7 @@ class SQL_Queries:
         inner join jl_employee_master EM
         on TH.TH_Driver_Employee_ID = EM_Employee_ID
         
-        where TH_Trip_Date > DATEADD(day,-14,getdate()) 
+        where TH_Trip_Date > DATEADD(day,-{},getdate()) 
             and TH_Active_Flag = '1' 
             and th_route_description not like 'OT Route'
             and ((DATEPART(dw, TH_Trip_Date) + @@DATEFIRST) % 7) NOT IN (1) 
@@ -53,7 +56,7 @@ class SQL_Queries:
             and th_route_description != 'OT Route' 
             and IS_DRIVER_COMPLETED = '1' 
             and TH_Trip_Completed = '1'
-    """
+    """.format(daysback)
 
     """
     The SQL_Trip query contains information about the actual, planned and zero deliveries that happened on a trip.
@@ -90,9 +93,9 @@ class SQL_Queries:
             and th.TH_Trip_Completed = '1'
             and th.TH_Trip_Status = 'confirmed'
             and ((DATEPART(dw, TD_Date) + @@DATEFIRST) % 7) NOT IN (1) 
-            and td_date > DATEADD(day,-14,getdate())
+            and td_date > DATEADD(day,-{},getdate())
         group by TD_Date, TD_Shop_Description, TD_Route_Description, EM_Employee_First_Name + ' ' + EM_Employee_Last_Name
-    """
+    """.format(daysback)
 
     """
     The SQL_CustomerAccounts Query contains information about the current total outstanding invoices per route.
@@ -135,10 +138,48 @@ class SQL_Queries:
             cm_customer_label 'CM_Driver',
             count(distinct(CM_Customer_id)) as '# New Customers'
         from jl_customer_master
-        where CM_CreationDate > DATEADD(day,-14,getdate())
+        where CM_CreationDate > DATEADD(day,-{},getdate())
         group by CM_Customer_Label
+    """.format(daysback)
+
+    """
+    The SQL_Complaints Query joins the date a complaint was registered for a certain route with the driver that was
+    driving this route that day, so it can be seen, how many complaints for each driver on each route were registered.
     """
 
+    SQL_Complaints = """
+        select
+        
+            GL_SHOP_DESCRIPTION 'COM_Shop',
+            GL_Route_Description 'COM_Route',
+            count(distinct(cm.complaint_number)) as 'Total Complaints',
+            sum(case when cm.IS_CLOSED = 'Y' then 1 else 0 end) as 'Closed Complaints',
+            EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'COM_Driver'
+            
+        from crm.C_COMPLAINT_MASTER CM
+        
+        inner join JL_Geo_Location_Master GL
+        on Cm.CM_CUSTOMER_ID = gl.GL_Entity_Link
+        
+        inner join JL_Trip_Header TH
+        on convert(date,cm.CREATED_DATE,101) = convert(date,th.TH_Trip_Date,101) and GL_Route_Description = TH_Route_Description and GL_SHOP_DESCRIPTION = TH_Shop_Description
+        
+        inner join jl_employee_master EM
+        on TH.TH_Driver_Employee_ID = EM_Employee_ID
+        
+        where GL_Default_Flag = '1'
+            and GL_Delete_Flag = '0'
+            and GL_Entity_Type = 'customer'
+            and GL_Route_Description not like 'inactive%'
+            and GL_Route_Description not like 'OT Route'
+            and cm.SUB_CATEGORY_ID <> '26'
+            and TH_Trip_Completed = '1'
+            and TH_Active_Flag = '1'
+            and IS_DRIVER_COMPLETED = '1'
+            and Cm.CREATED_DATE > DATEADD(day,-{},getdate())
+        
+        group by gl.GL_SHOP_DESCRIPTION, GL_Route_Description, EM_Employee_First_Name + ' ' + EM_Employee_Last_Name
+    """.format(daysback)
 
     def get_SQL_TripHeader(self):
         return self.SQL_TripHeader
@@ -151,3 +192,6 @@ class SQL_Queries:
 
     def get_SQL_CustomerMaster(self):
         return self.SQL_CustomerMaster
+
+    def get_SQL_Complaints(self):
+        return self.SQL_Complaints

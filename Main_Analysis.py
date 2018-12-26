@@ -27,7 +27,8 @@ addition Jivana is currently planning expansions to other cities, which makes a 
 # Calling the stored SQL_Queries and saving them into a dictionary
 Call_SQL_Queries = SQL_Queries()
 Queries = {"SQL_TripHeader": Call_SQL_Queries.SQL_TripHeader, "SQL_Trip": Call_SQL_Queries.SQL_Trip,
-           "SQL_CustomerAccounts": Call_SQL_Queries.SQL_CustomerAccounts, "SQL_CustomerMaster": Call_SQL_Queries.get_SQL_CustomerMaster()}
+           "SQL_CustomerAccounts": Call_SQL_Queries.SQL_CustomerAccounts, "SQL_CustomerMaster": Call_SQL_Queries.get_SQL_CustomerMaster(),
+           "SQL_Complaints": Call_SQL_Queries.SQL_Complaints}
 
 SQL_Folder = 'Output/SQL_Data/'
 date = str(date.today())
@@ -48,13 +49,14 @@ def operations_on_csv():
     DF_TripHeader = dataframes[1]
     DF_CustomerAccounts = dataframes[2]
     DF_CustomerMaster = dataframes[3]
+    DF_Complaints = dataframes[4]
 
     """
     Since there are more and more calculations coming and I started to lose the overview, so I decided to split
     each data source with its calculations into its own class, so I only call the final 'clean' data frame for each
     data source into my main file. Here I finally perform the calculations where data sources 'interact' with each
     other. This makes it easier to perform changes on the individual data frames and makes the whole thing more
-    structured for me.
+    structured for me. Other Data (that is already in the needed format) I join directly.
     """
 
     Call_Calc_Delivery = Calc_Delivery(DF_Trip)
@@ -78,11 +80,17 @@ def operations_on_csv():
     df_final = df_final.drop(['CA_Shop', 'CA_Route'], axis=1)
 
     # Left joining the new customers per driver to the existing final data frame
-    df_final = pd.merge(df_final, DF_CustomerMaster, how='left',
-                        left_on=['TD_Driver'], right_on=['CM_Driver'])
+    df_final = pd.merge(df_final, DF_CustomerMaster, how='left', left_on=['TD_Driver'], right_on=['CM_Driver'])
 
     # Dropping duplicated columns from this merge
     df_final = df_final.drop(['CM_Driver'], axis=1)
+
+    # Left joining the complaints per driver/route to the existing final data frame
+    df_final = pd.merge(df_final, DF_Complaints, how='left',
+                        left_on=['TD_Shop', 'TD_Route', 'TD_Driver'], right_on=['COM_Shop', 'COM_Route', 'COM_Driver'])
+
+    # Dropping dublicated columns from this merge
+    df_final = df_final.drop(['COM_Shop', 'COM_Route', 'COM_Driver'], axis=1)
 
     # Performing Calculations that are only possible with the merged data frames
     # 1. Calculating the average deliveries per hour before converting the average time to an hour:minute format
@@ -94,6 +102,8 @@ def operations_on_csv():
     # Formatting certain columns for better readability
     df_final['Open Invoices'] = df_final['Open Invoices'].map(lambda x: "INR {0:,.0f}".format(x))
     df_final['# New Customers'] = df_final['# New Customers'].fillna('')
+    df_final['Total Complaints'] = df_final['Total Complaints'].fillna('')
+    df_final['Closed Complaints'] = df_final['Closed Complaints'].fillna('')
 
     # splitting by shop and saving the output-data frames. Following args needed:
     # # date - today's date as a string
