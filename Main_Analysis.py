@@ -111,5 +111,4 @@ def operations_on_csv():
     save = Save_Output(date, df_final)
     save.save_to_folder()
 
-
 operations_on_csv()
