@@ -49,7 +49,7 @@ class SQL_Queries:
         inner join jl_employee_master EM
         on TH.TH_Driver_Employee_ID = EM_Employee_ID
         
-        where TH_Trip_Date > DATEADD(day,-{},getdate()) 
+        where TH_Trip_Date > DATEADD(day,-{0},getdate()) 
             and TH_Active_Flag = '1' 
             and th_route_description not like 'OT Route'
             and ((DATEPART(dw, TH_Trip_Date) + @@DATEFIRST) % 7) NOT IN (1) 
@@ -137,11 +137,21 @@ class SQL_Queries:
 
     SQL_CustomerMaster = """
         select 
-            cm_customer_label 'CM_Driver',
+            GL_SHOP_DESCRIPTION 'CM_Shop',
+			GL_Route_Description 'CM_Route',
+			cm_customer_label 'CM_Driver',
             count(distinct(CM_Customer_id)) as '# New Customers'
         from jl_customer_master
+
+		left join JL_Geo_Location_Master GL
+		on CM_Customer_ID = GL_Entity_Link
+
         where CM_CreationDate > DATEADD(day,-{},getdate())
-        group by CM_Customer_Label
+            and GL_Default_Flag = '1'
+            and GL_Delete_Flag = '0'
+            and GL_Entity_Type = 'Customer'
+
+        group by GL_SHOP_DESCRIPTION, GL_Route_Description, CM_Customer_Label
     """.format(daysback)
 
     """

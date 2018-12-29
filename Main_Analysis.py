@@ -5,6 +5,7 @@ from Data_from_SQL import get_Data
 from Save_Output import Save_Output
 from Calculations.Calc_Delivery import Calc_Delivery
 from Calculations.Calc_Time import Calc_Time
+from Driver import Driver
 
 """
 The following code is meant to be the baseline for a future driver and route analysis for Jivana Vitality. I wrote it
@@ -80,10 +81,11 @@ def operations_on_csv():
     df_final = df_final.drop(['CA_Shop', 'CA_Route'], axis=1)
 
     # Left joining the new customers per driver to the existing final data frame
-    df_final = pd.merge(df_final, DF_CustomerMaster, how='left', left_on=['TD_Driver'], right_on=['CM_Driver'])
+    df_final = pd.merge(df_final, DF_CustomerMaster, how='left', left_on=['TD_Driver', 'TD_Shop', 'TD_Route'],
+                        right_on=['CM_Driver', 'CM_Shop', 'CM_Route'])
 
     # Dropping duplicated columns from this merge
-    df_final = df_final.drop(['CM_Driver'], axis=1)
+    df_final = df_final.drop(['CM_Driver', 'CM_Shop', 'CM_Route'], axis=1)
 
     # Left joining the complaints per driver/route to the existing final data frame
     df_final = pd.merge(df_final, DF_Complaints, how='left',
@@ -105,10 +107,15 @@ def operations_on_csv():
     df_final['Total Complaints'] = df_final['Total Complaints'].fillna('')
     df_final['Closed Complaints'] = df_final['Closed Complaints'].fillna('')
 
+    XXX = Driver(DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_Complaints, DF_CustomerMaster)
+    A = XXX.calc_driver()
+    print(A)
+
     # splitting by shop and saving the output-data frames. Following args needed:
     # # date - today's date as a string
     # df_final - final data frame that contains all data that is to be displayed
     save = Save_Output(date, df_final)
     save.save_to_folder()
+
 
 operations_on_csv()
