@@ -9,7 +9,7 @@ I decided to store the content of the queries locally, so if I was able to acces
 I was still able work with the data for the rest of that day. In addition to this it made repeated runs of the code faster.
 
 At the same time I had to make sure that I don't use old data accidentally. So I wrote the code in a way
-that it always deletes old files of the same file path/name but with a different date/ending. Also other
+that it always deletes old files of the same file path/name but with a different dateToday/ending. Also other
 files with totally different names are left untouched, in case someone stores something different in the folder.
 """
 
@@ -25,11 +25,11 @@ class get_Data:
     # establishing connection through the pyodbc library
     Conn_SQL = pyodbc.connect('DSN=Jivana_Vitality; UID=jvl_readonly; PWD=jvl@@1;Trusted_Connection=no')
 
-    def __init__(self, SQL_Folder, Queries, date):
+    def __init__(self, SQL_Folder, Queries, dateToday):
 
         self.SQL_Folder = SQL_Folder
         self.Queries = Queries
-        self.date = date
+        self.dateToday = dateToday
 
     def get_data_from_sql(self):
 
@@ -37,7 +37,7 @@ class get_Data:
         if not os.path.exists(self.SQL_Folder):
             os.makedirs(self.SQL_Folder)
         for Query_Name, Query in self.Queries.items():
-            csv_name = '{}_'.format(Query_Name) + self.date + '.csv'
+            csv_name = '{}_'.format(Query_Name) + self.dateToday + '.csv'
             if not os.path.exists(self.SQL_Folder + csv_name):
                 for filename in glob.glob("{0}{1}_*".format(self.SQL_Folder, Query_Name)):
                     try:
@@ -53,12 +53,13 @@ class get_Data:
     def store_csv_to_df(self):
 
         # Reading data from different csv files to df and make them accessible for Main_Analysis
-        DF_Trip = pd.read_csv(self.SQL_Folder + "SQL_Trip_{}.csv".format(self.date))
-        DF_TripHeader = pd.read_csv(self.SQL_Folder + "SQL_TripHeader_{}.csv".format(self.date))
-        DF_CustomerAccounts = pd.read_csv(self.SQL_Folder + "SQL_CustomerAccounts_{}.csv".format(self.date))
-        DF_CustomerMaster = pd.read_csv(self.SQL_Folder + "SQL_CustomerMaster_{}.csv".format(self.date))
-        DF_Complaints = pd.read_csv(self.SQL_Folder + "SQL_Complaints_{}.csv".format(self.date))
-        dataframes = [DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_CustomerMaster, DF_Complaints]
-        print('Dataframes stored')
+        DF_Trip = pd.read_csv(self.SQL_Folder + "SQL_Trip_{}.csv".format(self.dateToday))
+        DF_TripHeader = pd.read_csv(self.SQL_Folder + "SQL_TripHeader_{}.csv".format(self.dateToday))
+        DF_CustomerAccounts = pd.read_csv(self.SQL_Folder + "SQL_CustomerAccounts_{}.csv".format(self.dateToday))
+        DF_CustomerMaster = pd.read_csv(self.SQL_Folder + "SQL_CustomerMaster_{}.csv".format(self.dateToday))
+        DF_Complaints = pd.read_csv(self.SQL_Folder + "SQL_Complaints_{}.csv".format(self.dateToday))
+        DF_EmployeeMaster = pd.read_csv(self.SQL_Folder + "SQL_EmployeeMaster_{}.csv".format(self.dateToday))
+        dataframes = [DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_CustomerMaster, DF_Complaints, DF_EmployeeMaster]
+        print('Dataframes properly stored')
 
         return dataframes

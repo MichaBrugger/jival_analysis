@@ -1,4 +1,5 @@
 import tkinter as tk
+from Main import Main
 
 """
 Inspired by sentdex and his course "Object Oriented Programming Crash Course with Python 3"
@@ -7,6 +8,11 @@ Inspired by sentdex and his course "Object Oriented Programming Crash Course wit
 # Defining different font-styles
 LARGE_FONT = ("Verdana", 12)
 
+target = ['Route', 'Driver_ID']
+daysback = '2'
+
+Call_Main = Main()
+Call_Main.operations_on_csv(target, daysback)
 
 class AnalysisApp(tk.Tk):
 
@@ -45,5 +51,5 @@ class StartPage(tk.Frame):
         button1 = tk.Button(self, text="Download")
         button1.pack()
 
-app = AnalysisApp()
-app.mainloop()
+#app = AnalysisApp()
+#app.mainloop()

@@ -1,11 +1,9 @@
-import pandas as pd
 from datetime import date
-from SQL_Queries import SQL_Queries
-from Data_from_SQL import get_Data
-from Save_Output import Save_Output
-from Calculations.Calc_Delivery import Calc_Delivery
-from Calculations.Calc_Time import Calc_Time
+from QueriesSQL import SQL_Queries
+from StoreData import get_Data
+from SaveOutput import Save_Output
 from Analysis import Analysis
+from Ranking import Ranking
 
 """
 The following code is meant to be the baseline for a future driver and route analysis for Jivana Vitality. I wrote it
@@ -25,42 +23,51 @@ With around 35 routes, each 'driven' by multiple drivers, a performance overview
 addition Jivana is currently planning expansions to other cities, which makes a automated performance analysis a must.
 """
 
-# Calling the stored SQL_Queries and saving them into a dictionary
-Call_SQL_Queries = SQL_Queries()
-Queries = {"SQL_TripHeader": Call_SQL_Queries.SQL_TripHeader, "SQL_Trip": Call_SQL_Queries.SQL_Trip,
-           "SQL_CustomerAccounts": Call_SQL_Queries.SQL_CustomerAccounts, "SQL_CustomerMaster": Call_SQL_Queries.get_SQL_CustomerMaster(),
-           "SQL_Complaints": Call_SQL_Queries.SQL_Complaints}
+class Main:
 
-SQL_Folder = 'Output/SQL_Data/'
-date = str(date.today())
+    def operations_on_csv(self, target, daysback):
 
-# Pulling the data from SQL, storing it into a csv and read that csv into a dataframe. Following args needed:
-# SQL_Folder - Folder where the raw data gets stored and accessed from
-# Queries - Dictionary, containing name and code of the queries
-# date - today's date as a string
-Call_Get_Data = get_Data(SQL_Folder, Queries, date)
-Call_Get_Data.get_data_from_sql()
+        # Calling the stored SQL_Queries and saving them into a dictionary
+        Call_SQL_Queries = SQL_Queries(daysback)
+        Queries = {"SQL_TripHeader": Call_SQL_Queries.SQL_TripHeader, "SQL_Trip": Call_SQL_Queries.SQL_Trip,
+                   "SQL_CustomerAccounts": Call_SQL_Queries.SQL_CustomerAccounts,
+                   "SQL_CustomerMaster": Call_SQL_Queries.SQL_CustomerMaster,
+                   "SQL_Complaints": Call_SQL_Queries.SQL_Complaints,
+                   "SQL_EmployeeMaster": Call_SQL_Queries.SQL_EmployeeMaster}
 
-def operations_on_csv():
-    # Main calculations/merging of different data frames from csv-files
+        SQL_Folder = 'Output/SQL_Data/'
+        dateToday = str(date.today())
 
-    # Calling the stored data frames
-    dataframes = Call_Get_Data.store_csv_to_df()
-    DF_Trip = dataframes[0]
-    DF_TripHeader = dataframes[1]
-    DF_CustomerAccounts = dataframes[2]
-    DF_CustomerMaster = dataframes[3]
-    DF_Complaints = dataframes[4]
+        # Pulling the data from SQL, storing it into a csv and read that csv into a dataframe. Following args needed:
+        # SQL_Folder - Folder where the raw data gets stored and accessed from
+        # Queries - Dictionary, containing name and code of the queries
+        # date - today's date as a string
+        Call_Get_Data = get_Data(SQL_Folder, Queries, dateToday)
+        Call_Get_Data.get_data_from_sql()
 
-    #New Logic
-    Output = Analysis(DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_Complaints, DF_CustomerMaster)
-    df_final = Output.calc()
+        # Main calculations/merging of different data frames from csv-files
 
-    # splitting by shop and saving the output-data frames. Following args needed:
-    # # date - today's date as a string
-    # df_final - final data frame that contains all data that is to be displayed
-    save = Save_Output(date, df_final)
-    save.save_to_folder()
+        # Calling the stored data frames
+        dataframes = Call_Get_Data.store_csv_to_df()
+        DF_Trip = dataframes[0]
+        DF_TripHeader = dataframes[1]
+        DF_CustomerAccounts = dataframes[2]
+        DF_CustomerMaster = dataframes[3]
+        DF_Complaints = dataframes[4]
+        DF_EmployeeMaster = dataframes[5]
 
+        # Executing Analysis to get Output_Raw based on aggregation level(target)
+        getRaw = Analysis(DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_Complaints, DF_CustomerMaster, DF_EmployeeMaster)
+        Output_Raw = getRaw.calc(target)
 
-operations_on_csv()
+        getRanked = Ranking(Output_Raw)
+        Output_Ranked = getRanked.rank(target)
+
+        print(Output_Ranked)
+
+        # splitting by shop and saving the output-data frames. Following args needed:
+        # # date - today's date as a string
+        # df_final - final data frame that contains all data that is to be displayed
+        save = Save_Output(dateToday, Output_Raw)
+        save.save_to_folder()
+
