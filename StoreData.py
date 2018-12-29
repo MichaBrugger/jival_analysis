@@ -60,8 +60,10 @@ class get_Data:
         DF_Complaints = pd.read_csv(self.SQL_Folder + "SQL_Complaints_{}.csv".format(self.dateToday))
         DF_EmployeeMaster = pd.read_csv(self.SQL_Folder + "SQL_EmployeeMaster_{}.csv".format(self.dateToday))
         DF_Receipts = pd.read_csv(self.SQL_Folder + "SQL_Receipts_{}.csv".format(self.dateToday))
+
         dataframes = [DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_CustomerMaster, DF_Complaints, DF_EmployeeMaster,
                       DF_Receipts]
+
         print('Dataframes properly stored')
 
         return dataframes

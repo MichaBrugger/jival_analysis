@@ -26,7 +26,11 @@ addition Jivana is currently planning expansions to other cities, which makes a 
 
 class Main:
 
-    def operations_on_csv(self, target, daysback, betterScore, Bonus):
+    Call_Get_Data = None
+    dateToday = str(date.today())
+    SQL_Folder = 'Output/SQL_Data/'
+
+    def operations_on_csv(self, daysback):
 
         # Calling the stored SQL_Queries and saving them into a dictionary
         Call_SQL_Queries = SQL_Queries(daysback)
@@ -39,20 +43,19 @@ class Main:
                    "SQL_EmployeeMaster": Call_SQL_Queries.SQL_EmployeeMaster,
                    "SQL_Receipts": Call_SQL_Queries.SQL_Receipts}
 
-        SQL_Folder = 'Output/SQL_Data/'
-        dateToday = str(date.today())
-
         # Pulling the data from SQL, storing it into a csv and read that csv into a dataframe. Following args needed:
         # SQL_Folder - Folder where the raw data gets stored and accessed from
         # Queries - Dictionary, containing name and code of the queries
         # date - today's date as a string
-        Call_Get_Data = get_Data(SQL_Folder, Queries, dateToday)
+        Call_Get_Data = get_Data(self.SQL_Folder, Queries, self.dateToday)
         Call_Get_Data.get_data_from_sql()
 
+
+    def calculations(self, target, betterScore, Bonus):
         # Main calculations/merging of different data frames from csv-files
 
         # Calling the stored data frames
-        dataframes = Call_Get_Data.store_csv_to_df()
+        dataframes = self.Call_Get_Data.store_csv_to_df()
         DF_Trip = dataframes[0]
         DF_TripHeader = dataframes[1]
         DF_CustomerAccounts = dataframes[2]
@@ -76,6 +79,6 @@ class Main:
         # splitting by shop and saving the output-data frames. Following args needed:
         # # date - today's date as a string
         # df_final - final data frame that contains all data that is to be displayed
-        save = Save_Output(dateToday, Output_Raw, Output_Ranked)
+        save = Save_Output(self.dateToday, Output_Raw, Output_Ranked)
         save.save_to_folder()
 

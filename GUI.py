@@ -1,5 +1,6 @@
 import tkinter as tk
 from Main import Main
+from QueriesSQL import SQL_Queries
 
 """
 Inspired by sentdex and his course "Object Oriented Programming Crash Course with Python 3"
@@ -10,13 +11,12 @@ LARGE_FONT = ("Verdana", 12)
 
 
 # Will be stored in a proper place later, just have it here for now
-target = ['Shop']
-daysback = '21'
+target = ['Route']
 betterScore = 0.5
 Bonus = 6000
 
 Call_Main = Main()
-Call_Main.operations_on_csv(target, daysback, betterScore, Bonus)
+
 
 
 class AnalysisApp(tk.Tk):
@@ -53,8 +53,18 @@ class StartPage(tk.Frame):
         label = tk.Label(self, text="Start Page", font=LARGE_FONT)
         label.pack(pady=10, padx=10)
 
-        button1 = tk.Button(self, text="Download")
-        button1.pack()
+        e = tk.Entry()
+        e.pack()
 
-#app = AnalysisApp()
-#app.mainloop()
+        e.focus_set()
+
+        def callback():
+            daysback = e.get()
+            Call_Main.operations_on_csv(daysback)
+
+        b = tk.Button(text="get", width=10, command=callback)
+        b.pack()
+
+
+app = AnalysisApp()
+app.mainloop()

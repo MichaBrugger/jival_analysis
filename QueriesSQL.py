@@ -17,8 +17,6 @@ class SQL_Queries:
     # Defining, how many days back the analyis should be done for all queries that are 'time-related'
     # Currently, when data for that day is already loaded, it has no influence, needs to be changed at some point
 
-    #daysback = '14' # Daysback is a fix value for now, will later be integrated in GUI
-
     def __init__(self, daysback):
 
         self.SQL_TripHeader = """
