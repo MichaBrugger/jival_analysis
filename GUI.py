@@ -8,11 +8,13 @@ Inspired by sentdex and his course "Object Oriented Programming Crash Course wit
 # Defining different font-styles
 LARGE_FONT = ("Verdana", 12)
 
-target = ['Route', 'Driver_ID']
-daysback = '2'
 
+# Will be stored in a proper place later, just have it here for now
+target = ['Shop']
+daysback = '2'
 Call_Main = Main()
 Call_Main.operations_on_csv(target, daysback)
+
 
 class AnalysisApp(tk.Tk):
 
