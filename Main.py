@@ -5,7 +5,7 @@ from Data_from_SQL import get_Data
 from Save_Output import Save_Output
 from Calculations.Calc_Delivery import Calc_Delivery
 from Calculations.Calc_Time import Calc_Time
-from Driver import Driver
+from Analysis import Analysis
 
 """
 The following code is meant to be the baseline for a future driver and route analysis for Jivana Vitality. I wrote it
@@ -107,8 +107,9 @@ def operations_on_csv():
     df_final['Total Complaints'] = df_final['Total Complaints'].fillna('')
     df_final['Closed Complaints'] = df_final['Closed Complaints'].fillna('')
 
-    XXX = Driver(DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_Complaints, DF_CustomerMaster)
-    A = XXX.calc_driver()
+    #New Logic
+    XXX = Analysis(DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_Complaints, DF_CustomerMaster)
+    A = XXX.calc()
     print(A)
 
     # splitting by shop and saving the output-data frames. Following args needed:

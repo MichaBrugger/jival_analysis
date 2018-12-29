@@ -120,8 +120,6 @@ class SQL_Queries:
         and GL_Default_Flag = '1'
         and GL_Delete_Flag = '0'
         and GL_Entity_Type = 'customer'
-        and gl_route_description not like 'Ot route'
-        and gl_route_description not like 'inactive%'
         and GL_SHOP_DESCRIPTION is not null
         and GL_Route_Description is not null
         
@@ -170,13 +168,13 @@ class SQL_Queries:
             
         from crm.C_COMPLAINT_MASTER CM
         
-        inner join JL_Geo_Location_Master GL
+        left join JL_Geo_Location_Master GL
         on Cm.CM_CUSTOMER_ID = gl.GL_Entity_Link
         
-        inner join JL_Trip_Header TH
+        left join JL_Trip_Header TH
         on convert(date,cm.CREATED_DATE,101) = convert(date,th.TH_Trip_Date,101) and GL_Route_Description = TH_Route_Description and GL_SHOP_DESCRIPTION = TH_Shop_Description
         
-        inner join jl_employee_master EM
+        left join jl_employee_master EM
         on TH.TH_Driver_Employee_ID = EM_Employee_ID
         
         where GL_Default_Flag = '1'
