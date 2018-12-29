@@ -31,40 +31,73 @@ class Analysis:
 
     def calc(self):
 
-        target = ['Shop']
+        # target indicates by what level the data should be aggregated
+        # its possible to aggregate by a single level (f.e. 'Shop') or multiple levels (f.e. 'Shop', 'Driver')
+        # this will later be implemented in the GUI
+        target = ['Driver']
+
+# ----- Calculations regarding the DF_Trip
 
         trip_avg = self.DF_Trip.groupby(target, as_index=False)['Actual_Delivery', 'Zero_Delivery', 'Customer_Count'].mean().round(1)
         trip_count = self.DF_Trip.groupby(target, as_index=False)['Actual_Delivery'].count()
         trip_sum = self.DF_Trip.groupby(target, as_index=False)['Actual_Delivery'].sum()
 
-        DF1 = reduce(lambda left, right: pd.merge(left, right, on=target),[trip_avg, trip_count, trip_sum])
-        DF1.columns = target + ['Ø Del', 'Ø 0 Del', 'Customers','# Trips', 'Total Del']
-        DF1['0 Del (%)'] = (DF1['Ø 0 Del'] / DF1['Customers'] * 100).round(1)
-        DF1.drop(['Ø 0 Del', 'Customers'], axis=1)
-# ------------------------------------
-        self.DF_TripHeader['Delivery_time'] = self.DF_TripHeader.apply(lambda row:(int(days_between(row.Trip_StartTime,row.Trip_EndTime))),axis=1)
-        DF2 = self.DF_TripHeader.groupby(target, as_index=False)['Delivery_time'].mean().round(1)
+        # Merging the values from DF_Trip into one DF_Trip_M(erged) and renaming the columns
+        DF_Trip_M = reduce(lambda left, right: pd.merge(left, right, on=target),[trip_avg, trip_count, trip_sum])
+        DF_Trip_M.columns = target + ['Ø Del', 'Ø 0 Del', 'Customers','# Trips', 'Total Del']
 
-        Output = DF1.merge(DF2, on=target, how='left')
-        Output['Ø Time'] = Output.apply(lambda row: (convert_sec_to_time(row.Delivery_time)), axis=1)
-        Output['Ø Del/h'] = ((Output['Ø Del'] / (Output['Delivery_time'])) * 3600).round(1)
-        Output = Output.drop(['Delivery_time'], axis=1)
-#-------------------------------------
+        # Calculating the percentage average amount of 0 deliveries and dropping unneeded columns
+        DF_Trip_M['0 Del (%)'] = (DF_Trip_M['Ø 0 Del'] / DF_Trip_M['Customers'] * 100).round(1)
+        DF_Trip_M.drop(['Ø 0 Del', 'Customers'], axis=1)
+
+# ----- Calculations regarding the DF_TripHeader
+
+        # Apply function to calculate delivery per trip
+        self.DF_TripHeader['Delivery_time'] = self.DF_TripHeader.apply(lambda row:(int(days_between(row.Trip_StartTime,row.Trip_EndTime))),axis=1)
+
+        # Grouping DF_TripHeader by target and storing into new DF_TripHeader_M(erged)
+        DF_TripHeader_M = self.DF_TripHeader.groupby(target, as_index=False)['Delivery_time'].mean().round(1)
+
+        # Merging DF_Trip_M and DF_TripHeader_M into new DF Output_Raw
+        Output_Raw = DF_Trip_M.merge(DF_TripHeader_M, on=target, how='left')
+
+        # Calculating Avg Time and Avg Del/h then dropping Delivery_time
+        Output_Raw['Ø Time'] = Output_Raw.apply(lambda row: (convert_sec_to_time(row.Delivery_time)), axis=1)
+        Output_Raw['Ø Del/h'] = ((Output_Raw['Ø Del'] / (Output_Raw['Delivery_time'])) * 3600).round(1)
+        Output_Raw = Output_Raw.drop(['Delivery_time'], axis=1)
+
+#------ Calculations regarding the DF_CustomerAccounts
+
+        # Customer Accounts (Outstanding Amount per Route) can only be merged on shop and route level
+        # If the aggregation is on driver level this wont be executed
         try:
+            # Grouping by target and then merging with Output_Raw
             self.DF_CustomerAccounts = self.DF_CustomerAccounts.groupby(target, as_index=False)['Open Invoices'].sum()
-            Output = Output.merge(self.DF_CustomerAccounts['Open Invoices'], how='left', on=target)
-            Output['Open Invoices'] = Output['Open Invoices'].map(lambda x: "INR {0:,.0f}".format(x))
+            Output_Raw = Output_Raw.merge(self.DF_CustomerAccounts['Open Invoices'], how='left', on=target)
+
+            # Column formatting (currency) for better visibility
+            Output_Raw['Open Invoices'] = Output_Raw['Open Invoices'].map(lambda x: "INR {0:,.0f}".format(x))
         except:
             pass
-#----------------------------------------
-        self.DF_CustomerMaster = self.DF_CustomerMaster.groupby(target, as_index=False)['# New Customers'].sum()
-        Output = Output.merge(self.DF_CustomerMaster, how='left', left_on=target, right_on=target)
-#------------------------------------
-        self.DF_Complaints = self.DF_Complaints.groupby(target, as_index=False)['Total Complaints', 'Closed Complaints'].sum()
-        Output = Output.merge(self.DF_Complaints, how='left', left_on=target, right_on=target)
-        Output['Closed (%)'] = (Output['Closed Complaints']/Output['Total Complaints']*100).round(1)
-        Output = Output.drop(['Closed Complaints'], axis=1)
-#------------------------------
-        Output = Output.fillna('')
 
-        return Output
+#------ Calculations regarding the DF_Customer_Master
+
+        # Grouping by target and then merging with Output_Raw
+        self.DF_CustomerMaster = self.DF_CustomerMaster.groupby(target, as_index=False)['# New Customers'].sum()
+        Output_Raw = Output_Raw.merge(self.DF_CustomerMaster, how='left', on=target)
+
+#------ Calculations regarding the DF_Complaints
+
+        # Grouping by target and then merging with Output_Raw
+        self.DF_Complaints = self.DF_Complaints.groupby(target, as_index=False)['Total Complaints', 'Closed Complaints'].sum()
+        Output_Raw = Output_Raw.merge(self.DF_Complaints, how='left', on=target)
+
+        # Calculating the percentage of closed complaints and then droping 'Closed Complaints'
+        Output_Raw['Closed (%)'] = (Output_Raw['Closed Complaints']/Output_Raw['Total Complaints']*100).round(1)
+        Output_Raw = Output_Raw.drop(['Closed Complaints'], axis=1)
+
+#------ Basic formatting and returning Output_Raw to Main
+
+        Output_Raw = Output_Raw.fillna('')
+
+        return Output_Raw
