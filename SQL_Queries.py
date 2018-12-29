@@ -22,11 +22,11 @@ class SQL_Queries:
     SQL_TripHeader = """
         select 
             convert(smalldatetime,TH_Trip_Date,108) as 'Trip_Date', 
-            th_shop_description as 'TH_Shop', 
-            th_route_description as 'TH_Route', 
+            th_shop_description as 'Shop', 
+            th_route_description as 'Route', 
             convert(smalldatetime,first_load_time,108) as 'Trip_StartTime', 
             convert(smalldatetime,driver_completed_datetime,108) as 'Trip_EndTime', 
-            EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'TH_Driver'
+            EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'Driver'
         from JL_Trip_Header TH 
         
         inner join( 
@@ -73,11 +73,11 @@ class SQL_Queries:
     SQL_Trip = """
         select
             td_date 'Date',
-            TD_Shop_Description 'TD_Shop',
-            TD_Route_Description 'TD_Route',
+            TD_Shop_Description 'Shop',
+            TD_Route_Description 'Route',
             sum(TD_Planned_Delivery_Qty) 'Planned_Delivery',
             sum(TD_Actual_Delivered_Qty) 'Actual_Delivery',
-            EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'TD_Driver',
+            EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'Driver',
             count(distinct(TD.TD_Customer_ID)) as 'Customer_Count',
             sum(case when (TD_Planned_Delivery_Qty > 0 and TD_Actual_Delivered_Qty = 0) then 1 else 0 end) 'Zero_Delivery'
         from JL_Trip_Details TD
@@ -105,11 +105,9 @@ class SQL_Queries:
 
     SQL_CustomerAccounts = """
         select
-        
-            GL_SHOP_DESCRIPTION 'CA_Shop',
-            GL_Route_Description 'CA_Route',
+            GL_SHOP_DESCRIPTION 'Shop',
+            GL_Route_Description 'Route',
             sum(CA_Open_Invoice) as 'Open Invoices'
-        
         from JL_Customer_Accounts
         
         inner join JL_Geo_Location_Master
@@ -135,9 +133,9 @@ class SQL_Queries:
 
     SQL_CustomerMaster = """
         select 
-            GL_SHOP_DESCRIPTION 'CM_Shop',
-			GL_Route_Description 'CM_Route',
-			cm_customer_label 'CM_Driver',
+            GL_SHOP_DESCRIPTION 'Shop',
+			GL_Route_Description 'Route',
+			cm_customer_label 'Driver',
             count(distinct(CM_Customer_id)) as '# New Customers'
         from jl_customer_master
 
@@ -159,13 +157,11 @@ class SQL_Queries:
 
     SQL_Complaints = """
         select
-        
-            GL_SHOP_DESCRIPTION 'COM_Shop',
-            GL_Route_Description 'COM_Route',
+            GL_SHOP_DESCRIPTION 'Shop',
+            GL_Route_Description 'Route',
             count(distinct(cm.complaint_number)) as 'Total Complaints',
             sum(case when cm.IS_CLOSED = 'Y' then 1 else 0 end) as 'Closed Complaints',
-            EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'COM_Driver'
-            
+            EM_Employee_First_Name + ' ' + EM_Employee_Last_Name 'Driver'
         from crm.C_COMPLAINT_MASTER CM
         
         left join JL_Geo_Location_Master GL

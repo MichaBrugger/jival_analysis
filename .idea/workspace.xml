@@ -11,23 +11,24 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="112" column="12" lean-forward="false" selection-start-line="112" selection-start-column="12" selection-end-line="112" selection-end-column="12" />
+            <state relative-caret-position="272">
+              <caret line="56" column="21" lean-forward="false" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
+                <element signature="e#282#1679#1" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Analysis.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Analysis.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Analysis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="561">
-              <caret line="33" column="26" lean-forward="false" selection-start-line="33" selection-start-column="8" selection-end-line="33" selection-end-column="26" />
+            <state relative-caret-position="441">
+              <caret line="66" column="31" lean-forward="true" selection-start-line="66" selection-start-column="31" selection-end-line="66" selection-end-column="31" />
               <folding>
                 <element signature="e#0#19#0" expanded="true" />
               </folding>
@@ -38,8 +39,8 @@
       <file leaf-file-name="Data_from_SQL.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Data_from_SQL.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="33" column="32" lean-forward="true" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
+            <state relative-caret-position="510">
+              <caret line="33" column="32" lean-forward="false" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -48,8 +49,8 @@
       <file leaf-file-name="SQL_Queries.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/SQL_Queries.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3145">
-              <caret line="185" column="39" lean-forward="true" selection-start-line="185" selection-start-column="39" selection-end-line="185" selection-end-column="39" />
+            <state relative-caret-position="663">
+              <caret line="163" column="66" lean-forward="false" selection-start-line="163" selection-start-column="66" selection-end-line="163" selection-end-column="66" />
               <folding />
             </state>
           </provider>
@@ -58,8 +59,8 @@
       <file leaf-file-name="Save_Output.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Save_Output.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="18" column="12" lean-forward="false" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
+            <state relative-caret-position="527">
+              <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -80,6 +81,9 @@
       <find>Date</find>
       <find>dataframe_one</find>
       <find>df_final</find>
+      <find>shop</find>
+      <find>ValueError\: Grouper and axis must be same length\n</find>
+      <find>target</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -101,14 +105,14 @@
         <option value="$PROJECT_DIR$/Calc_Time.py" />
         <option value="$PROJECT_DIR$/Calculations/Calc_Delivery.py" />
         <option value="$PROJECT_DIR$/Calculations/Calc_Time.py" />
-        <option value="$PROJECT_DIR$/Save_Output.py" />
         <option value="$PROJECT_DIR$/Data_from_SQL.py" />
         <option value="$PROJECT_DIR$/GUI.py" />
         <option value="$PROJECT_DIR$/Driver.py" />
         <option value="$PROJECT_DIR$/Main_Analysis.py" />
         <option value="$PROJECT_DIR$/Main.py" />
-        <option value="$PROJECT_DIR$/Analysis.py" />
         <option value="$PROJECT_DIR$/SQL_Queries.py" />
+        <option value="$PROJECT_DIR$/Save_Output.py" />
+        <option value="$PROJECT_DIR$/Analysis.py" />
       </list>
     </option>
   </component>
@@ -155,7 +159,7 @@
             <path>
               <item name="Jival_Analysis" type="b2602c69:ProjectViewProjectNode" />
               <item name="Jival_Analysis" type="462c0819:PsiDirectoryNode" />
-              <item name="Calculations" type="462c0819:PsiDirectoryNode" />
+              <item name="Output" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -312,16 +316,17 @@
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="R Packages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="R Graphics" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928064" sideWeight="0.50208336" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32928064" sideWeight="0.49791667" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928064" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="R Packages" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="R Graphics" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39918947" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
@@ -329,7 +334,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -341,7 +345,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Main.py</url>
-          <line>117</line>
+          <line>61</line>
           <option name="timeStamp" value="19" />
         </line-breakpoint>
       </breakpoints>
@@ -352,7 +356,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="20" />
+      <option name="time" value="28" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -616,16 +620,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Calculations/Calc_Delivery.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#19#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Output/SQL_Data/SQL_CustomerMaster_2018-12-29.csv">
       <provider selected="true" editor-type-id="csv-text-editor">
         <state relative-caret-position="612">
@@ -659,44 +653,53 @@
         <state showInfoPanel="true" rowLines="3" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Analysis.py">
+    <entry file="file://$PROJECT_DIR$/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="33" column="26" lean-forward="false" selection-start-line="33" selection-start-column="8" selection-end-line="33" selection-end-column="26" />
+        <state relative-caret-position="272">
+          <caret line="56" column="21" lean-forward="false" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#282#1679#1" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Calculations/Calc_Delivery.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="17" column="73" lean-forward="false" selection-start-line="17" selection-start-column="39" selection-end-line="17" selection-end-column="73" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/SQL_Queries.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3145">
-          <caret line="185" column="39" lean-forward="true" selection-start-line="185" selection-start-column="39" selection-end-line="185" selection-end-column="39" />
+        <state relative-caret-position="663">
+          <caret line="163" column="66" lean-forward="false" selection-start-line="163" selection-start-column="66" selection-end-line="163" selection-end-column="66" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Save_Output.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="18" column="12" lean-forward="false" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
+        <state relative-caret-position="527">
+          <caret line="31" column="0" lean-forward="false" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Data_from_SQL.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="33" column="32" lean-forward="true" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
+        <state relative-caret-position="510">
+          <caret line="33" column="32" lean-forward="false" selection-start-line="33" selection-start-column="32" selection-end-line="33" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Main.py">
+    <entry file="file://$PROJECT_DIR$/Analysis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="112" column="12" lean-forward="false" selection-start-line="112" selection-start-column="12" selection-end-line="112" selection-end-column="12" />
+        <state relative-caret-position="441">
+          <caret line="66" column="31" lean-forward="true" selection-start-line="66" selection-start-column="31" selection-end-line="66" selection-end-column="31" />
           <folding>
             <element signature="e#0#19#0" expanded="true" />
           </folding>
