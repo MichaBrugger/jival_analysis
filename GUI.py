@@ -11,9 +11,12 @@ LARGE_FONT = ("Verdana", 12)
 
 # Will be stored in a proper place later, just have it here for now
 target = ['Shop']
-daysback = '2'
+daysback = '21'
+betterScore = 0.5
+Bonus = 6000
+
 Call_Main = Main()
-Call_Main.operations_on_csv(target, daysback)
+Call_Main.operations_on_csv(target, daysback, betterScore, Bonus)
 
 
 class AnalysisApp(tk.Tk):

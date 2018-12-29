@@ -21,7 +21,8 @@ def convert_sec_to_time(x):
 
 class Analysis:
 
-    def __init__(self, DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_Complaints, DF_CustomerMaster, DF_EmployeeMaster):
+    def __init__(self, DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_Complaints, DF_CustomerMaster, DF_EmployeeMaster,
+                 DF_Receipts):
 
         self.DF_Trip = DF_Trip
         self.DF_TripHeader = DF_TripHeader
@@ -29,6 +30,7 @@ class Analysis:
         self.DF_Complaints = DF_Complaints
         self.DF_CustomerMaster = DF_CustomerMaster
         self.DF_EmployeeMaster = DF_EmployeeMaster
+        self.DF_Receipts = DF_Receipts
 
     def calc(self, target):
     # All calculations that are needed to create Output_Raw, ordered by data frame
@@ -78,7 +80,8 @@ class Analysis:
 #------ Calculations regarding the DF_Customer_Master
 
         # Grouping by target and then merging with Output_Raw
-        self.DF_CustomerMaster = self.DF_CustomerMaster.groupby(target, as_index=False)['# New Customers'].sum()
+        self.DF_CustomerMaster = self.DF_CustomerMaster.groupby(target, as_index=False)['New Customers'].sum()
+        self.DF_CustomerMaster.fillna('0')
         Output_Raw = Output_Raw.merge(self.DF_CustomerMaster, how='left', on=target)
 
 #------ Calculations regarding the DF_Complaints
@@ -89,6 +92,12 @@ class Analysis:
 
         # Calculating the percentage of closed complaints
         Output_Raw['Closed (%)'] = (Output_Raw['Closed Complaints']/Output_Raw['Complaints']*100).round(1)
+
+#------ Merging with DF_Receipts
+
+        self.DF_Receipts = self.DF_Receipts.groupby(target, as_index=False)['Receipts'].sum()
+        Output_Raw = Output_Raw.merge(self.DF_Receipts, how='left', on=target)
+        Output_Raw['Receipts'] = Output_Raw['Receipts'].map(lambda x: "INR {0:,.0f}".format(x))
 
 #------ Merging with DF_EmployeeMaster
 
@@ -101,8 +110,9 @@ class Analysis:
 
 #------ Basic formatting and returning Output_Raw to Main
 
-        Output_Raw = Output_Raw.fillna('')
+        Output_Raw = Output_Raw.fillna('0')
         Output_Raw = Output_Raw[target + ['Total Del', '# Trips', 'Ø Del', 'Ø Del/h', 'Ø 0 Del', '0 Del (%)',
-                                          'Customers', '# New Customers', 'Ø Time', 'Complaints', 'Closed (%)']]
+                                          'Customers', 'New Customers', 'Ø Time', 'Complaints', 'Closed (%)',
+                                          'Receipts']]
 
         return Output_Raw

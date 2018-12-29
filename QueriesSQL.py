@@ -135,7 +135,7 @@ class SQL_Queries:
                 GL_SHOP_DESCRIPTION 'Shop',
                 GL_Route_Description 'Route',
                 em.EM_Employee_ID as 'Driver_ID',
-                count(distinct(CM_Customer_id)) as '# New Customers'
+                count(distinct(CM_Customer_id)) as 'New Customers'
             from jl_customer_master
     
             left join JL_Geo_Location_Master GL
@@ -187,6 +187,11 @@ class SQL_Queries:
             group by gl.GL_SHOP_DESCRIPTION, GL_Route_Description, TH.TH_Driver_Employee_ID
         """.format(daysback)
 
+        """
+        The SQL_EmployeeMaster contains information on the names of the drivers that are later matched through the
+        Driver_ID, it's important to use the ID for aggregation since there are multiple Drivers with the same name.
+        """
+
         self.SQL_EmployeeMaster = """
             select 
                 EM_Employee_ID 'Driver_ID',
@@ -194,6 +199,41 @@ class SQL_Queries:
             from JL_Employee_Master
             where EM_employee_type like '%Driver%'
         """
+
+        """
+        The SQL_Receipts Query contains information on how much money money was collected in which shop, on which route
+        and by which driver.
+        """
+
+        self.SQL_Receipts = """
+            select
+                GL_SHOP_DESCRIPTION as 'Shop',
+                GL_Route_Description as 'Route',
+                th.TH_Driver_Employee_ID 'Driver_ID',
+                sum(BP_Receipt_Amount) as 'Receipts'
+            from JL_Receipts
+                
+            inner join JL_Geo_Location_Master
+            on jl_receipts.BP_bill_to_Customer_ID = JL_Geo_Location_Master.GL_Entity_Link
+                
+            inner join JL_Trip_Header TH
+            on GL_Route_Description = TH_Route_Description and GL_SHOP_DESCRIPTION = TH_Shop_Description and convert(date,bp_receipt_date,101) = convert(date,TH_Trip_Date,101)
+                
+            where BP_Receipt_Date >= '2018-01-01'
+                and bp_deleted_flag = '0'
+                and GL_Delete_Flag = '0'
+                and GL_Entity_Type = 'customer'
+                and GL_Default_Flag = '1'
+                and gl_route_description not like 'Ot Route'
+                and gl_route_description not like 'inactive%'
+                and th.TH_Active_Flag = '1'
+                and th.TH_Trip_Completed = '1'
+                and th.TH_Trip_Status = 'confirmed'
+                and IS_RECONCILED = '1'
+                and IS_DRIVER_COMPLETED = '1'
+                and bp_receipt_date > DATEADD(day,-{},getdate())
+            group by GL_SHOP_DESCRIPTION, GL_Route_Description, th.TH_Driver_Employee_ID
+        """.format(daysback)
 
     def get_SQL_TripHeader(self):
         return self.SQL_TripHeader
@@ -212,3 +252,6 @@ class SQL_Queries:
 
     def get_SQL_EmployeeMaster(self):
         return self.SQL_EmployeeMaster
+
+    def get_SQL_Receipts(self):
+        return self.SQL_Receipts

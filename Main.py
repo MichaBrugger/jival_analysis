@@ -1,3 +1,4 @@
+import pandas as pd
 from datetime import date
 from QueriesSQL import SQL_Queries
 from StoreData import get_Data
@@ -25,15 +26,18 @@ addition Jivana is currently planning expansions to other cities, which makes a 
 
 class Main:
 
-    def operations_on_csv(self, target, daysback):
+    def operations_on_csv(self, target, daysback, betterScore, Bonus):
 
         # Calling the stored SQL_Queries and saving them into a dictionary
         Call_SQL_Queries = SQL_Queries(daysback)
-        Queries = {"SQL_TripHeader": Call_SQL_Queries.SQL_TripHeader, "SQL_Trip": Call_SQL_Queries.SQL_Trip,
+
+        Queries = {"SQL_TripHeader": Call_SQL_Queries.SQL_TripHeader,
+                   "SQL_Trip": Call_SQL_Queries.SQL_Trip,
                    "SQL_CustomerAccounts": Call_SQL_Queries.SQL_CustomerAccounts,
                    "SQL_CustomerMaster": Call_SQL_Queries.SQL_CustomerMaster,
                    "SQL_Complaints": Call_SQL_Queries.SQL_Complaints,
-                   "SQL_EmployeeMaster": Call_SQL_Queries.SQL_EmployeeMaster}
+                   "SQL_EmployeeMaster": Call_SQL_Queries.SQL_EmployeeMaster,
+                   "SQL_Receipts": Call_SQL_Queries.SQL_Receipts}
 
         SQL_Folder = 'Output/SQL_Data/'
         dateToday = str(date.today())
@@ -55,19 +59,23 @@ class Main:
         DF_CustomerMaster = dataframes[3]
         DF_Complaints = dataframes[4]
         DF_EmployeeMaster = dataframes[5]
+        DF_Receipts = dataframes[6]
 
         # Executing Analysis to get Output_Raw based on aggregation level(target)
-        getRaw = Analysis(DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_Complaints, DF_CustomerMaster, DF_EmployeeMaster)
+        getRaw = Analysis(DF_Trip, DF_TripHeader, DF_CustomerAccounts, DF_Complaints, DF_CustomerMaster,
+                          DF_EmployeeMaster, DF_Receipts)
         Output_Raw = getRaw.calc(target)
 
-        getRanked = Ranking(Output_Raw)
-        Output_Ranked = getRanked.rank(target)
+        # Making sure the data is actually numeric and not formatted as an object
+        Output_Raw = Output_Raw.apply(pd.to_numeric, errors='ignore')
 
-        print(Output_Ranked)
+        # Executing Ranking to get Output_Ranked out of Output_Raw
+        getRanked = Ranking(Output_Raw)
+        Output_Ranked = getRanked.rank(target, betterScore, Bonus)
 
         # splitting by shop and saving the output-data frames. Following args needed:
         # # date - today's date as a string
         # df_final - final data frame that contains all data that is to be displayed
-        save = Save_Output(dateToday, Output_Raw)
+        save = Save_Output(dateToday, Output_Raw, Output_Ranked)
         save.save_to_folder()
 

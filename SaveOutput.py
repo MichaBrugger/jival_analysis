@@ -8,28 +8,30 @@ The csv output is generated for further analysis.
 
 class Save_Output:
 
-    def __init__(self, dateToday, df_final):
+    def __init__(self, dateToday, Output_Raw, Output_Ranked):
 
         self.dateToday = dateToday
-        self.df_final = df_final
+        self.Output_Raw = Output_Raw
+        self.Output_Ranked = Output_Ranked
 
     def save_to_folder(self):
 
         # Getting a unique list of all the shops in the data
         try:
-            Shop_List = self.df_final['Shop'].unique()
+            Shop_List = self.Output_Raw['Shop'].unique()
 
             # Looping through the Shop_List, to create individual files/folders for every shop
             for Shop in range(len(Shop_List)):
                 ShopName = Shop_List[Shop]
                 if not os.path.exists('Output/' + Shop_List[Shop]):
                     os.makedirs('Output/' + Shop_List[Shop])
-                df_shop = (self.df_final.loc[self.df_final['Shop']==ShopName])
+                df_shop = (self.Output_Raw.loc[self.Output_Raw['Shop']==ShopName])
                 df_shop.to_csv('Output/' + ShopName + '/{}_{}.csv'.format(ShopName, self.dateToday), index=False)
                 df_shop.to_html('Output/' + ShopName + '/{}_{}.html'.format(ShopName, self.dateToday), index=False, justify='left')
         except:
             pass
 
         # Saving a final overview in csv and html
-        self.df_final.to_csv('Output/' + "Overview_{}.csv".format(self.dateToday), index=False)
-        self.df_final.to_html('Output/' + "Overview_{}.html".format(self.dateToday), index=False, justify='left')
+        self.Output_Raw.to_csv('Output/' + "Overview_{}.csv".format(self.dateToday), index=False)
+        self.Output_Raw.to_html('Output/' + "Overview_{}.html".format(self.dateToday), index=False, justify='left')
+        self.Output_Ranked.to_html('Output/' + "Ranked_{}.html".format(self.dateToday), index=False, justify='left')
