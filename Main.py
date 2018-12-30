@@ -6,6 +6,23 @@ from SaveOutput import Save_Output
 from Analysis import Analysis
 from Ranking import Ranking
 
+"""
+The following code is meant to be the baseline for a future driver and route analysis for Jivana Vitality. I wrote it
+during my internship as a project for the HSG XCamp course. While the current version is not yet capable of the in-depth
+analysis that is the goal for the future, it  already serves as an overview for both managers and executives to see how
+certain routes and drivers are performing.
+
+To add some context to the project:
+Jivana Vitality India Pvt. Ltd. is an Indian for-profit company providing affordable drinking water. It was founded in
+2014 by three HSG Students and has since established itself as the biggest water provider in Udaipur, India.
+In both rural and urban parts of India access to affordable, clean drinking water is still a big problem and many people
+have problems with diseases caused by polluted water. Jivana Vitality tackles this problem by providing bottled - water
+quality water for a fraction of the price that bottled water costs, thus making it affordable for everyone. Through five
+water-shops in Udaipur we deliver 80'000 liters of water daily to over 5000 active customers directly to their doorstep.
+
+With around 35 routes, each 'driven' by multiple drivers, a performance overview is getting more and more difficult. In
+addition Jivana is currently planning expansions to other cities, which makes a automated performance analysis a must.
+"""
 
 class Main:
 
@@ -32,7 +49,6 @@ class Main:
         # date - today's date as a string
         Call_Get_Data = get_Data(self.SQL_Folder, Queries, self.dateToday)
         Call_Get_Data.get_data_from_sql()
-
 
     def calculations(self, target, betterScore, Bonus):
         # Main calculations/merging of different data frames from csv-files

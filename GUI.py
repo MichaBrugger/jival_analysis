@@ -1,40 +1,34 @@
 import tkinter as tk
 from Main import Main
-from QueriesSQL import SQL_Queries
+
+
+# The long term goal is to create a GUI that displays the generated data frames as a stand-alone executable (I did some
+# successful first tries with pyinstaller in this regard). This would make it much easier to distribute to the company
+# managers since they wouldn't have to install python and all of it's libraries to run the code.
+
+# --------------------------------------
+
+# Calculations currently don't get executed since they are not attached to anything
+
+# Here I store all the input variables that later should be implemented in the GUI (daysback is already "implemented')
+target = ['Route'] # target marks the aggregation level of the data (shop, route, driver_id or a combination of them)
+betterScore = 0.5 # to get bonus the drivers have to score better than x% of their peers (from 0 to 1)
+Bonus = 6000 # how much is the "pot" for the bonuses in INR
+Call_Main = Main() # --> here for convenience, doesnt really belong here
+#daysback has a input field when you run the code --> needs a number to work
+
+# ---------------------------------------
 
 """
 Inspired by sentdex and his course "Object Oriented Programming Crash Course with Python 3"
 """
 
-"""
-The following code is meant to be the baseline for a future driver and route analysis for Jivana Vitality. I wrote it
-during my internship as a project for the HSG XCamp course. While the current version is not yet capable of the in-depth
-analysis that is the goal for the future, it  already serves as an overview for both managers and executives to see how
-certain routes and drivers are performing.
-
-To add some context to the project:
-Jivana Vitality India Pvt. Ltd. is an Indian for-profit company providing affordable drinking water. It was founded in
-2014 by three HSG Students and has since established itself as the biggest water provider in Udaipur, India.
-In both rural and urban parts of India access to affordable, clean drinking water is still a big problem and many people
-have problems with diseases caused by polluted water. Jivana Vitality tackles this problem by providing bottled - water
-quality water for a fraction of the price that bottled water costs, thus making it affordable for everyone. Through five
-water-shops in Udaipur we deliver 80'000 liters of water daily to over 5000 active customers directly to their doorstep.
-
-With around 35 routes, each 'driven' by multiple drivers, a performance overview is getting more and more difficult. In
-addition Jivana is currently planning expansions to other cities, which makes a automated performance analysis a must.
-"""
-
-# All the GUI part is currently heavily under construction, will all be commented/formatted in the next days
+# All the GUI part is currently heavily under construction, and basically just a copy from sentdexs youtube course to
+# see if tkinter is actually working for me and  doing what I want it to do
 
 # Defining different font-styles
 LARGE_FONT = ("Verdana", 12)
 
-# Will be stored in a proper place later, just have it here for now
-target = ['Route']
-betterScore = 0.5
-Bonus = 6000
-
-Call_Main = Main()
 
 class AnalysisApp(tk.Tk):
 
@@ -42,44 +36,43 @@ class AnalysisApp(tk.Tk):
 
         tk.Tk.__init__(self, *args, **kwargs)
         container = tk.Frame(self)
-
         container.pack(side='top', fill='both', expand=True)
-
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
-
         self.frames = {}
-
-        frame = StartPage(container, self)
-
-        self.frames[StartPage] = frame
-
+        frame = InputPage(container, self)
+        self.frames[InputPage] = frame
         frame.grid(row=0, column=0, sticky='nsew')
-
-        self.show_frame(StartPage)
+        self.show_frame(InputPage)
 
     def show_frame(self, cont):
 
         frame = self.frames[cont]
         frame.tkraise()
 
-class StartPage(tk.Frame):
+
+class InputPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Start Page", font=LARGE_FONT)
+        label = tk.Label(self, text="Future Input Page", font=LARGE_FONT)
         label.pack(pady=10, padx=10)
 
-        e = tk.Entry()
-        e.pack()
+        w = tk.Label(text="Put in the amount of days that should be downloaded and analysed.\n\nIf you want a new set"
+                          "of days you currently\nhave to delete the downloaded files or wait for a new day :)")
+        w.pack()
 
-        e.focus_set()
+        daysbackEntry = tk.Entry()
+        daysbackEntry.pack()
+        daysbackEntry.focus_set()
 
         def callback():
-            daysback = e.get()
+            daysback = daysbackEntry.get()
             Call_Main.operations_on_csv(daysback)
+            #need some kind of input verification here (it needs to be a number)
+            # then the window needs to be closed so the rest of the code runs through
 
-        b = tk.Button(text="get", width=10, command=callback)
+        b = tk.Button(text="Download Data", width=10, command=callback)
         b.pack()
 
 
