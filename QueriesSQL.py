@@ -14,8 +14,7 @@ class SQL_Queries:
     that day on that route to the time he needed to complete the trip.
     """
 
-    # Defining, how many days back the analyis should be done for all queries that are 'time-related'
-    # Currently, when data for that day is already loaded, it has no influence, needs to be changed at some point
+    # Currently, when data for that day is already loaded, daysback has no influence, needs to be changed at some point
 
     def __init__(self, daysback):
 
