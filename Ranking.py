@@ -41,4 +41,5 @@ class Ranking:
         except:
             Output_Ranked = Output_Ranked[target + ['Ø Del', 'Complaints', 'New Customers', 'Receipts', 'Bonus']]
 
+        print('Output_Ranked created')
         return Output_Ranked

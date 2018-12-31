@@ -114,4 +114,5 @@ class Analysis:
             Output_Raw = Output_Raw[target + ['Total Del', '# Trips', 'Ø Del', 'Ø Del/h', 'Ø 0 Del', '0 Del (%)',
                                           'Customers', 'New Customers', 'Ø Time', 'Complaints', 'Closed (%)', 'Receipts']]
 
+        print("Output_Raw created")
         return Output_Raw

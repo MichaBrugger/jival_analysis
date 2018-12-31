@@ -46,9 +46,10 @@ class get_Data:
                     except:
                         print('Remove {} is not possible'.format(Query_Name))
                 pd.read_sql_query(Query, self.Conn_SQL).to_csv(self.SQL_Folder + csv_name, index=False)
-                print('{} downloaded successful'.format(Query_Name))
+                #print('{} downloaded successful'.format(Query_Name))
             else:
                 print('{} already downloaded'.format(Query_Name))
+        print('All data downloaded successful')
 
     def store_csv_to_df(self):
 

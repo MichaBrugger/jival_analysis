@@ -35,3 +35,5 @@ class Save_Output:
         self.Output_Ranked.to_csv('Output/' + "Ranked_{}.csv".format(self.dateToday), index=False)
         self.Output_Raw.to_html('Output/' + "Overview_{}.html".format(self.dateToday), index=False, justify='left')
         self.Output_Ranked.to_html('Output/' + "Ranked_{}.html".format(self.dateToday), index=False, justify='left')
+
+        print('All outputs saved to HTML and CSV')
