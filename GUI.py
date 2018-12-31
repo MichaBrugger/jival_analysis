@@ -28,7 +28,6 @@ Inspired by sentdex and his course "Object Oriented Programming Crash Course wit
 # Defining different font-styles
 LARGE_FONT = ("Verdana", 12)
 
-
 class AnalysisApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
