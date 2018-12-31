@@ -17,21 +17,21 @@ class Save_Output:
     def save_to_folder(self):
 
         # Getting a unique list of all the shops in the data
-        try:
-            Shop_List = self.Output_Raw['Shop'].unique()
 
-            # Looping through the Shop_List, to create individual files/folders for every shop
-            for Shop in range(len(Shop_List)):
-                ShopName = Shop_List[Shop]
-                if not os.path.exists('Output/' + Shop_List[Shop]):
-                    os.makedirs('Output/' + Shop_List[Shop])
-                df_shop = (self.Output_Raw.loc[self.Output_Raw['Shop']==ShopName])
-                df_shop.to_csv('Output/' + ShopName + '/{}_{}.csv'.format(ShopName, self.dateToday), index=False)
-                df_shop.to_html('Output/' + ShopName + '/{}_{}.html'.format(ShopName, self.dateToday), index=False, justify='left')
-        except:
-            pass
+        Shop_List = self.Output_Raw['Shop'].unique()
+
+        # Looping through the Shop_List, to create individual files/folders for every shop
+        for Shop in range(len(Shop_List)):
+            ShopName = Shop_List[Shop]
+            if not os.path.exists('Output/' + Shop_List[Shop]):
+                os.makedirs('Output/' + Shop_List[Shop])
+            df_shop = (self.Output_Raw.loc[self.Output_Raw['Shop']==ShopName])
+            df_shop.to_csv('Output/' + ShopName + '/{}_{}.csv'.format(ShopName, self.dateToday), index=False)
+            df_shop.to_html('Output/' + ShopName + '/{}_{}.html'.format(ShopName, self.dateToday), index=False, justify='left')
+
 
         # Saving a final overview in csv and html
         self.Output_Raw.to_csv('Output/' + "Overview_{}.csv".format(self.dateToday), index=False)
+        self.Output_Ranked.to_csv('Output/' + "Ranked_{}.csv".format(self.dateToday), index=False)
         self.Output_Raw.to_html('Output/' + "Overview_{}.html".format(self.dateToday), index=False, justify='left')
         self.Output_Ranked.to_html('Output/' + "Ranked_{}.html".format(self.dateToday), index=False, justify='left')

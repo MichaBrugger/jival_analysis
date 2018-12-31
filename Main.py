@@ -47,8 +47,9 @@ class Main:
         # SQL_Folder - Folder where the raw data gets stored and accessed from
         # Queries - Dictionary, containing name and code of the queries
         # date - today's date as a string
-        Call_Get_Data = get_Data(self.SQL_Folder, Queries, self.dateToday)
-        Call_Get_Data.get_data_from_sql()
+
+        self.Call_Get_Data = get_Data(self.SQL_Folder, Queries, self.dateToday)
+        self.Call_Get_Data.get_data_from_sql()
 
     def calculations(self, target, betterScore, Bonus):
         # Main calculations/merging of different data frames from csv-files
