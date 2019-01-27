@@ -3,7 +3,7 @@ class SQL_Queries:
 
     """
     The SQL_TripHeader query contains information about date and time of a trip, as well as shop, route and driver
-    so it can later be merged with other dataframes. In detail it contains information from the following tables:
+    so it can later be merged with other data frames. In detail it contains information from the following tables:
     JL_Trip_Header, JL_Trip_Load and JL_Employee_Master
 
     JL_Trip_Load is joined with itself to get the min(tl_date) which marks the time the the truck was loaded for the

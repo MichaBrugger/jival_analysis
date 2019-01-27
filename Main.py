@@ -82,3 +82,4 @@ class Main:
         save = Save_Output(self.dateToday, Output_Raw, Output_Ranked)
         save.save_to_folder()
 
+
