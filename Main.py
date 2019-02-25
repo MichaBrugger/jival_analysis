@@ -27,6 +27,7 @@ addition Jivana is currently planning expansions to other cities, which makes a 
 class Main:
 
     Call_Get_Data = None
+    Output_Ranked = None
     dateToday = str(date.today())
     SQL_Folder = 'Output/SQL_Data/'
 
@@ -74,12 +75,13 @@ class Main:
 
         # Executing Ranking to get Output_Ranked out of Output_Raw
         getRanked = Ranking(Output_Raw)
-        Output_Ranked = getRanked.rank(target, betterScore, Bonus)
+        self.Output_Ranked = getRanked.rank(target, betterScore, Bonus)
 
         # splitting by shop and saving the output-data frames. Following args needed:
         # # date - today's date as a string
         # df_final - final data frame that contains all data that is to be displayed
-        save = Save_Output(self.dateToday, Output_Raw, Output_Ranked)
+        save = Save_Output(self.dateToday, Output_Raw, self.Output_Ranked)
         save.save_to_folder()
 
-
+    def getOutputRanked(self):
+        return self.Output_Ranked

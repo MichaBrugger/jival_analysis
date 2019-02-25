@@ -60,6 +60,8 @@ class Analysis:
         Output_Raw = DF_Trip_M.merge(DF_TripHeader_M, on=target, how='left')
 
         # Calculating Avg Time and Avg Del/h
+
+        Output_Raw = Output_Raw.fillna(int('0'))
         Output_Raw['Ø Time'] = Output_Raw.apply(lambda row: (convert_sec_to_time(row.Delivery_time)), axis=1)
         Output_Raw['Ø Del/h'] = ((Output_Raw['Ø Del'] / (Output_Raw['Delivery_time'])) * 3600).round(1)
 
